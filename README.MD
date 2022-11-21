@@ -28,3 +28,8 @@ LogIn: http://localhost:3000/api/logIn
 
 **descripcion:** peticion para poder iniciar secion en la aplicacion proporcionando un correo electronico y una contraseña, si estos datos no estan en la base de datos significa que no esta registrado
 
+### Peticion 6:
+LogIn: http://localhost:3000/api/changePassword
+
+**descripcion:** peticion para cambiar la contraseña del usuario con el cual se haya iniciado sesion. Es necesario primero iniciar sesion.
+

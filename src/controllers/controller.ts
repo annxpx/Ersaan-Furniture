@@ -4,10 +4,12 @@ import { validate } from "class-validator";
 import { createUserDto } from "../dtos/createUserDto";
 import Service from "../services/service";
 import { LogInDto } from "../dtos/logInDto";
+import { changePasswordDto } from "../dtos/changePasswordDto";
 
 
 export class StoreController{
     router = Router()
+    
 
     constructor(){
         this.initRoutes()
@@ -50,7 +52,6 @@ export class StoreController{
         const erros = await validate(contenidoPeticion)
 
         if(erros.length){
-            console.log(erros);
             return res.status(400).json({"validation-errors":erros})            
         }
 
@@ -63,7 +64,6 @@ export class StoreController{
         const errors = await validate(contenidoPeticion)
 
         if(errors.length){
-            console.log(errors)
             return res.status(400).json({"validation-errors": errors})
         }
 
@@ -71,7 +71,14 @@ export class StoreController{
     }
 
     async changePassword(req: Request, res: Response) : Promise <Response>{
+        const payload = req.body
+        const contenidoPeticion = plainToClass(changePasswordDto, payload)
+        const errors = await validate(contenidoPeticion)
 
-        return res.json()
+        if(errors.length){
+            return res.status(400).json({"validation-errors": errors})
+        }
+
+        return res.json(await Service.changePassword(contenidoPeticion))
     }
 }

@@ -1,8 +1,11 @@
+import { changePasswordDto } from "../dtos/changePasswordDto"
 import { createUserDto } from "../dtos/createUserDto"
 import { LogInDto } from "../dtos/logInDto"
 
 
 class Service{
+
+    private login
 
     private productosDePrueba = [
         { id: 1, name: "silon", precio: 5000, status: "new", sucursal: 1},
@@ -46,12 +49,26 @@ class Service{
         const usuario = this.usuariosDePrueba.find(valorActual => valorActual.email===logInData.email)
         if(usuario){
             if(usuario.password === logInData.password){
+                this.login = usuario
                 return `has iniciado sesion con ${usuario.name}`
             }else{
                 return "contraseña incorrecta"
             }
         }else{
             return "El correo proporcionado no se encuentra en la base de datos"
+        }
+    }
+
+    public async changePassword(changePassword : changePasswordDto){
+        if(this.login){
+            this.usuariosDePrueba.map(valorActual => {
+                if(valorActual.id === this.login.id){
+                    valorActual.password = changePassword.password
+                }
+            })
+            return "se ha actualizado la contraseña del usuario actual"
+        }else{
+            return "no se ha iniciado sesion en algun usuario"
         }
     }
 
