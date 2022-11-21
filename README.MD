@@ -18,4 +18,13 @@ getUsers: http://localhost:3000/api/users
 
 **descripcion:** Solicitar lista de todos los usuarios registrados. Esto es con fines meramente practicos para evaluar el p rograma.
 
+### Peticion 4:
+createUser: http://localhost:3000/api/createUser
+
+**descripcion:** peticion para crear usuarios, debe contener en formato JSON los siguientes datos: name, email, password; el indice de usuario se crea automaticamente.
+
+### Peticion 5:
+LogIn: http://localhost:3000/api/logIn
+
+**descripcion:** peticion para poder iniciar secion en la aplicacion proporcionando un correo electronico y una contraseña, si estos datos no estan en la base de datos significa que no esta registrado
 
