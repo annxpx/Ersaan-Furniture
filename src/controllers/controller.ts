@@ -20,6 +20,7 @@ export class StoreController{
         this.router.get('/users', this.getUsers)
         this.router.post('/createUser', this.createUser)
         this.router.post('/logIn', this.logIn)
+        this.router.post('/changePassword', this.changePassword)
     }
 
     async getList(req: Request, res: Response): Promise <Response>{
@@ -67,5 +68,10 @@ export class StoreController{
         }
 
         return res.json(await Service.logIn(contenidoPeticion))
+    }
+
+    async changePassword(req: Request, res: Response) : Promise <Response>{
+
+        return res.json()
     }
 }
