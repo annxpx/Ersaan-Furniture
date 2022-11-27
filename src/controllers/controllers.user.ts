@@ -7,38 +7,18 @@ import { LogInDto } from "../dtos/logInDto";
 import { changePasswordDto } from "../dtos/changePasswordDto";
 
 
-export class StoreController{
-    router = Router()
-    
+export class UserCOntroller{
+    router = Router();
 
     constructor(){
-        this.initRoutes()
+        
     }
 
     initRoutes(){
-        this.router.get('/furniture', this.getList)
-        this.router.get('/furniture/:id', this.getOne)
-        this.router.post('/buyFurniture', this.buyOne)
         this.router.get('/users', this.getUsers)
         this.router.post('/createUser', this.createUser)
         this.router.post('/logIn', this.logIn)
         this.router.post('/changePassword', this.changePassword)
-    }
-// dividir los controllers en entidades
-    async getList(req: Request, res: Response): Promise <Response>{
-        const furnitureList = await Service.getFurniture()
-        return res.json(furnitureList)
-    }
-
-    async getOne(req: Request, res: Response): Promise <Response>{
-        const {id}= req.params;
-        const furniture = await Service.getOneFurniture(+id);
-
-        return res.json(furniture)
-    }
-
-    async buyOne(){
-
     }
 
     async getUsers(req: Request, res: Response): Promise <Response>{

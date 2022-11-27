@@ -25,6 +25,7 @@ createUser: http://localhost:3000/api/createUser
 
 ### Peticion 5:
 LogIn: http://localhost:3000/api/logIn
+### JWT (JSON WEB TOKEN )
 
 **descripcion:** peticion para poder iniciar secion en la aplicacion proporcionando un correo electronico y una contraseña, si estos datos no estan en la base de datos significa que no esta registrado
 
