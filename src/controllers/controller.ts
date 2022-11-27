@@ -13,10 +13,10 @@ function generateAccessToken(user){
 }
 
 function validateToken(req, res, next){
-    const accesToken = req.headers['authorization'] || req.query.accesstoken
-    if(!accesToken) res.send('access denied')
+    const accessToken = req.headers['authorization'] || req.query.accesstoken
+    if(!accessToken) res.send('access denied')
 
-    jwt.verify(accesToken,process.env.SECRET, (err, user)=>{
+    jwt.verify(accessToken,process.env.SECRET, (err, user)=>{
         if(err){
             res.send('Access denied, token expired or incorrect')
         }else{
@@ -61,7 +61,7 @@ export class StoreController{
     async buyOne(req, res: Response){
         res.json({
             username: req.user,
-            informacion : 'esta pagina se accede con JWT, si ves esto es por que lo lograste'
+            info : 'esta pagina se accede con JWT, si ves esto es por que lo lograste'
         })
     }
 
@@ -73,10 +73,10 @@ export class StoreController{
     async createUser(req: Request, res: Response): Promise <Response>{
         const payload = req.body
         const contenidoPeticion = plainToClass(createUserDto, payload)
-        const erros = await validate(contenidoPeticion)
+        const errors = await validate(contenidoPeticion)
 
-        if(erros.length){
-            return res.status(400).json({"validation-errors":erros})            
+        if(errors.length){
+            return res.status(400).json({"validation-errors":errors})            
         }
 
         return res.json(await Service.createUser(contenidoPeticion))
@@ -94,7 +94,7 @@ export class StoreController{
 
         return res.json(await Service.logIn(contenidoPeticion))*/
 
-        res.send(`<html>
+        res.send(`<html lang="unknown">
                     <head>
                         <title>Login</title>
                     </head>
@@ -119,11 +119,11 @@ export class StoreController{
         //con esos datos consultamos a la base de datos para ver si existe
 
         const user = {username: username}
-        const accesToken = generateAccessToken(user)
+        const accessToken = generateAccessToken(user)
 
-        res.header('authorization', accesToken).json({
+        res.header('authorization', accessToken).json({
             message: "usuario autenticado",
-            token: accesToken
+            token: accessToken
         })
     }
 
