@@ -15,6 +15,7 @@ class App{
 
     middlewares(){
         this.express.use(json());
+        this.express.use(express.urlencoded({extended: false}))
     }
 
     listen(port : number) {
