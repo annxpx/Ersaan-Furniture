@@ -66,6 +66,12 @@ export class Products extends Model{
         allowNull: false,
     })
     public material: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    public pieces: number;
     
     @Column({
         type: DataType.INTEGER,
