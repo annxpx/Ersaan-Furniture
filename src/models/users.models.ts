@@ -29,4 +29,10 @@ export class Users extends Model {
         type: DataType.STRING(15),
     })
     public password: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: true,
+    })
+    public id_branches: number;
 }    
