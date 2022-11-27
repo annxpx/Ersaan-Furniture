@@ -2,7 +2,6 @@
 import * as dotenv from 'dotenv';
 import { Products } from '../models/products.models';
 import { Users } from '../models/users.models';
-import { Admins } from '../models/admin.models';
 import {Branches} from "../models/branches.models";
 import {Banches_Products} from "../models/banches_products.models";
 import {Users_Products} from "../models/users_products.models";
@@ -22,7 +21,6 @@ class Connection{
             models: [
                 Products,
                 Users,
-                Admins,
                 Branches,
                 Banches_Products,
                 Users_Products
