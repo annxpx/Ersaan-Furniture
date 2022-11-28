@@ -1,4 +1,4 @@
-import express, {json} from 'express'
+import express, {json, urlencoded} from 'express'
 import { StoreController } from './controllers/controller';
 
 class App{
@@ -15,6 +15,7 @@ class App{
 
     middlewares(){
         this.express.use(json());
+        this.express.use(urlencoded({extended: false}))
     }
 
     listen(port : number) {

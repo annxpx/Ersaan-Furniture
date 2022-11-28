@@ -1,31 +1,47 @@
 import { plainToClass } from "class-transformer";
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import { validate } from "class-validator";
 import { createUserDto } from "../dtos/createUserDto";
-import Service from "../services/service";
+import UserServices from "../services/service.users";
 import { LogInDto } from "../dtos/logInDto";
 import { changePasswordDto } from "../dtos/changePasswordDto";
 
 
 export class UserCOntroller{
-    router = Router();
-
-    constructor(){
-        
-    }
-
-    initRoutes(){
-        this.router.get('/users', this.getUsers)
-        this.router.post('/createUser', this.createUser)
-        this.router.post('/logIn', this.logIn)
-        this.router.post('/changePassword', this.changePassword)
-    }
 
     async getUsers(req: Request, res: Response): Promise <Response>{
-        const usersList = await Service.getUsers()
+        const usersList = await UserServices.getUsers()
         return res.json(usersList)
     }
 
+    async logIn(req: Request, res: Response): Promise <Response>{
+        const payload = req.body
+
+
+        return res.json("login")
+    }
+
+    async singUp(req: Request, res: Response): Promise <Response>{
+
+        return res.json("signup")
+    }
+
+    /*
+    async logIn(req: Request, res: Response): Promise <Response>{
+        const payload = req.body
+        const contenidoPeticion = plainToClass(LogInDto, payload)
+        const errors = await validate(contenidoPeticion)
+
+        if(errors.length){
+            return res.status(400).json({"validation-errors": errors})
+        }
+
+        return res.json(await UserServices.logIn(contenidoPeticion))
+    }
+    */
+
+    
+    /*
     async createUser(req: Request, res: Response): Promise <Response>{
         const payload = req.body
         const contenidoPeticion = plainToClass(createUserDto, payload)
@@ -37,19 +53,9 @@ export class UserCOntroller{
 
         return res.json(await Service.createUser(contenidoPeticion))
     }
+    */
 
-    async logIn(req: Request, res: Response): Promise <Response>{
-        const payload = req.body
-        const contenidoPeticion = plainToClass(LogInDto, payload)
-        const errors = await validate(contenidoPeticion)
-
-        if(errors.length){
-            return res.status(400).json({"validation-errors": errors})
-        }
-
-        return res.json(await Service.logIn(contenidoPeticion))
-    }
-
+    /*
     async changePassword(req: Request, res: Response) : Promise <Response>{
         const payload = req.body
         const contenidoPeticion = plainToClass(changePasswordDto, payload)
@@ -61,4 +67,5 @@ export class UserCOntroller{
 
         return res.json(await Service.changePassword(contenidoPeticion))
     }
+    */
 }

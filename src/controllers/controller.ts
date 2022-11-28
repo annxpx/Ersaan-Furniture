@@ -5,25 +5,29 @@ import { createUserDto } from "../dtos/createUserDto";
 import Service from "../services/service";
 import { LogInDto } from "../dtos/logInDto";
 import { changePasswordDto } from "../dtos/changePasswordDto";
+import { UserCOntroller } from "./controllers.user";
 
 
 export class StoreController{
     router = Router()
-    
+    userControllers : UserCOntroller
 
     constructor(){
+        this.userControllers = new UserCOntroller()
         this.initRoutes()
     }
 
     initRoutes(){
-        this.router.get('/furniture', this.getList)
-        this.router.get('/furniture/:id', this.getOne)
-        this.router.post('/buyFurniture', this.buyOne)
-        this.router.get('/users', this.getUsers)
-        this.router.post('/createUser', this.createUser)
-        this.router.post('/logIn', this.logIn)
-        this.router.post('/changePassword', this.changePassword)
+        //peticion de uso practico
+        this.router.get('/users', this.userControllers.getUsers)
+
+        //peticiones de la aplicacion
+        this.router.post('/login', this.userControllers.logIn)
+        this.router.post('/signup', this.userControllers.singUp)
     }
+
+    /*
+
 // dividir los controllers en entidades
     async getList(req: Request, res: Response): Promise <Response>{
         const furnitureList = await Service.getFurniture()
@@ -81,4 +85,5 @@ export class StoreController{
 
         return res.json(await Service.changePassword(contenidoPeticion))
     }
+    */
 }

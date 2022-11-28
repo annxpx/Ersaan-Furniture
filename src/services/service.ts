@@ -33,11 +33,6 @@ class Service{
         }
     }
 
-    public async getUsers(){
-        const users = this.usuariosDePrueba
-        return users
-    }
-
     public async createUser(userData : createUserDto){
         const indice = this.usuariosDePrueba.length + 1
         this.usuariosDePrueba.push({id: indice, name: userData.name, email: userData.email, password: userData.password})
