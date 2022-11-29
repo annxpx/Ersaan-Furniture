@@ -51,5 +51,12 @@ export class UserCOntroller{
         const usersList = await UserServices.getUsers()
         return res.json({usersList, solicitante: userAccessData})
     }
+
+    //este metodo solo es accesible si el usuario tiene token---------------------
+    async changePassword(req: Request, res: Response): Promise <Response>{
+        
+
+        return res.json("contraseña guardada")
+    }
    
 }

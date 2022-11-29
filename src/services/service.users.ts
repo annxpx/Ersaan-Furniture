@@ -38,6 +38,10 @@ class UsersServices{
         }
     }
 
+    public async changePassword(id){
+
+    }
+
     
 }
 
