@@ -4,33 +4,18 @@ En este repositorio se estaran subiendo las actualizaciones del proyecto de la c
 
 ## Configuracion de Insonmia:
 ### Peticion 1:
-getFurniture: http://localhost:3000/api/furniture
-
-**descripcion:** solicitar lista de todos lo muebles en la base de datos
+signUp: http://localhost:3000/api/signup
+TIPO: **POST**
+**descripcion:** peticion donde se envian los datos necesarios para crear un nuevo usuario
 
 ### Peticion 2:
-getOneFurniture: http://localhost:3000/api/furniture/1
-
-**descripcion:** solicitar un mueble de la base de datos, el argumento es el ID del producto
-
-### Peticion 3:
-getUsers: http://localhost:3000/api/users
-
-**descripcion:** Solicitar lista de todos los usuarios registrados. Esto es con fines meramente practicos para evaluar el p rograma.
-
-### Peticion 4:
-createUser: http://localhost:3000/api/createUser
-
-**descripcion:** peticion para crear usuarios, debe contener en formato JSON los siguientes datos: name, email, password; el indice de usuario se crea automaticamente.
-
-### Peticion 5:
-LogIn: http://localhost:3000/api/logIn
+logIn: http://localhost:3000/api/login
+TIPO: **POST**
+**descripcion**: peticion donde se envian el email y password en formato JSON. si existe un usuario con esos datos en la base de datos se respondera con un token para poder acceder al resto de rutas protegidas
 ### JWT (JSON WEB TOKEN )
 
-**descripcion:** peticion para poder iniciar secion en la aplicacion proporcionando un correo electronico y una contraseña, si estos datos no estan en la base de datos significa que no esta registrado
-
-### Peticion 6:
-change password: http://localhost:3000/api/changePassword
-
-**descripcion:** peticion para cambiar la contraseña del usuario con el cual se haya iniciado sesion. Es necesario primero iniciar sesion.
-
+### Peticion de uso practico:
+users: http://localhost:3000/api/users
+TIPO: **GET**
+ACCESO SOLO CON **JWT**
+**descripcion:** se consigue una lista de todos los usuarios creados. 

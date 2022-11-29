@@ -13,4 +13,12 @@ export class createUserDto {
     @Length(1,15, {message: "La contraseña no puede tener mas de 15 caracteres!"})
     @IsNotEmpty()
     password: string
+
+    @Length(1,1, {message:"el tipo de usuario puede ser 0 o 1"})
+    @IsNotEmpty()
+    tipo: number
+
+    @Length(1, 10, {message:"debe ser un ID numerico"})
+    @IsNotEmpty()
+    sucursal: number
 }

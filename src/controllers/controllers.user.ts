@@ -4,68 +4,52 @@ import { validate } from "class-validator";
 import { createUserDto } from "../dtos/createUserDto";
 import UserServices from "../services/service.users";
 import { LogInDto } from "../dtos/logInDto";
-import { changePasswordDto } from "../dtos/changePasswordDto";
-
+import serviceUsers from "../services/service.users";
+import * as jwt from 'jsonwebtoken'
 
 export class UserCOntroller{
 
-    async getUsers(req: Request, res: Response): Promise <Response>{
-        const usersList = await UserServices.getUsers()
-        return res.json(usersList)
-    }
-
-    async logIn(req: Request, res: Response): Promise <Response>{
-        const payload = req.body
-
-
-        return res.json("login")
-    }
-
-    async singUp(req: Request, res: Response): Promise <Response>{
-
-        return res.json("signup")
-    }
-
-    /*
     async logIn(req: Request, res: Response): Promise <Response>{
         const payload = req.body
         const contenidoPeticion = plainToClass(LogInDto, payload)
         const errors = await validate(contenidoPeticion)
 
         if(errors.length){
-            return res.status(400).json({"validation-errors": errors})
+            console.log(errors);
+            return res.status(400).json("errores en los datos de inicio de sesion")
+        }
+ 
+        const usuario = await serviceUsers.logIn(contenidoPeticion)
+
+        if(!usuario){
+            return res.status(401).json("Email o contraseña no validos")
         }
 
-        return res.json(await UserServices.logIn(contenidoPeticion))
-    }
-    */
+        const token = jwt.sign({id: usuario.id}, process.env.MY_SECRET_TOKEN, {
+            expiresIn: 60 * 60 * 24
+        })
 
-    
-    /*
-    async createUser(req: Request, res: Response): Promise <Response>{
-        const payload = req.body
+        return res.json({auth: true,token})
+    }
+
+    async singUp(req: Request, res: Response): Promise <Response>{
+        const  payload = req.body
         const contenidoPeticion = plainToClass(createUserDto, payload)
-        const erros = await validate(contenidoPeticion)
-
-        if(erros.length){
-            return res.status(400).json({"validation-errors":erros})            
-        }
-
-        return res.json(await Service.createUser(contenidoPeticion))
-    }
-    */
-
-    /*
-    async changePassword(req: Request, res: Response) : Promise <Response>{
-        const payload = req.body
-        const contenidoPeticion = plainToClass(changePasswordDto, payload)
         const errors = await validate(contenidoPeticion)
 
         if(errors.length){
-            return res.status(400).json({"validation-errors": errors})
+            console.log(errors)
+            return res.status(400).json("Error en los datos enviados")
         }
 
-        return res.json(await Service.changePassword(contenidoPeticion))
+        return res.status(200).json(await serviceUsers.createUser(contenidoPeticion))
     }
-    */
+    
+    //este metodo solo es accesible si el usuario tiene token---------------------
+    async getUsers(req: Request, res: Response): Promise <Response>{
+        const {userAccessData} = req.body
+        const usersList = await UserServices.getUsers()
+        return res.json({usersList, solicitante: userAccessData})
+    }
+   
 }
