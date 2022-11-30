@@ -17,6 +17,13 @@ export class Users extends Model {
         unique: true,
     })
     public username: string;
+
+    @Column({
+        type: DataType.STRING(10),
+        allowNull: false,
+        unique: true,
+    })
+    public type: string;
     
     @Column({
         type: DataType.STRING(50),

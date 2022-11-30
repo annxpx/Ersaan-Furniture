@@ -1,5 +1,4 @@
 ﻿import { Model, Column, DataType, Table } from "sequelize-typescript";
-import {FloatDataType} from "sequelize";
 @Table({
     tableName: 'products'
 })
@@ -23,7 +22,7 @@ export class Products extends Model{
         type: DataType.FLOAT,
         allowNull: false,
     })
-    public price: FloatDataType;
+    public price: number;
     
     @Column({
         type: DataType.STRING(50),
@@ -72,6 +71,12 @@ export class Products extends Model{
         allowNull: false,
     })
     public pieces: number;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    public quantity: number;
     
     @Column({
         type: DataType.INTEGER,
