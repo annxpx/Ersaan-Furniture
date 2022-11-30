@@ -1,26 +1,32 @@
 import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
 import { validate } from "class-validator";
-import { createUserDto } from "../dtos/createUserDto";
-import UserServices from "../services/service.users";
-import { LogInDto } from "../dtos/logInDto";
-import serviceProducts from "../services/service.products";
+import productServices from "../services/service.products";
 import * as jwt from 'jsonwebtoken'
 
 export class productsController{
     async getProducts(req: Request, res: Response): Promise <Response>{
+        const products = await productServices.getProducts()
 
-        return res.json("lista de productos")
+        return res.status(200).json(products)
     }
 
     async getProduct(req: Request, res: Response): Promise <Response>{
+        const {id}= req.params
+        const producto = await productServices.getProduct(+id)
 
-        return res.json("un producto")
+        return res.status(200).json(producto)
     }
 
     async buyProduct(req: Request, res: Response): Promise <Response>{
+        const {id} = req.params
+        const resultadoPeticion = await productServices.buyProduct(+id)
 
-        return res.json("producto comprado")
+        if(resultadoPeticion.respuesta){
+            return res.status(200).json(resultadoPeticion.message)
+        }else{
+            return res.status(400).json(resultadoPeticion.message)
+        }
     }
 
     async modProduct(req: Request, res: Response): Promise <Response>{
