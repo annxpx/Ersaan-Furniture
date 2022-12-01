@@ -6,6 +6,7 @@ import UserServices from "../services/service.users";
 import { LogInDto } from "../dtos/logInDto";
 import serviceUsers from "../services/service.users";
 import * as jwt from 'jsonwebtoken'
+import provideToken from "../common/provideToken";
 
 export class UserCOntroller{
 
@@ -25,9 +26,7 @@ export class UserCOntroller{
             return res.status(401).json("Email o contraseña no validos")
         }
 
-        const token = jwt.sign({id: usuario.id}, process.env.MY_SECRET_TOKEN, {
-            expiresIn: 60 * 60 * 24
-        })
+        const token = provideToken(usuario.id)
 
         return res.json({auth: true,token})
     }

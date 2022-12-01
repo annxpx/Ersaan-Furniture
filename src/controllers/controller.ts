@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UserCOntroller } from "./controllers.user";
 import { productsController } from "./controller.products";
-import verifyToken from "./verifyToken";
+import verifyToken from "../common/verifyToken";
 
 export class StoreController{
     router = Router()
@@ -22,11 +22,12 @@ export class StoreController{
         this.router.post('/login', this.userControllers.logIn)
         this.router.post('/signup', this.userControllers.singUp)
         this.router.post('/changepass', verifyToken, this.userControllers.changePassword)
-
+        
         //peticiones de la aplicacion: productos
         this.router.get('/products', verifyToken, this.productsControllers.getProducts)
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
-        this.router.delete('/buy/:id', verifyToken, this.productsControllers.buyProduct)
+        this.router.patch('/buy/:id', verifyToken, this.productsControllers.buyProduct)
+        this.router.patch('/modproduct', verifyToken, this.productsControllers.modProduct)
     }
 
 }

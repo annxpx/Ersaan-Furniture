@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken'
 import 'dotenv'
+import provideToken from '../common/provideToken'
 class UsersServices{
 
     private usuariosDePrueba = [
@@ -14,15 +15,14 @@ class UsersServices{
     }
 
     public async createUser(user){
+        // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
         //ahora con estos datos añadimos el usuario en la base de datos, tabla usuarios
         const lastIndex = this.usuariosDePrueba.at(-1).id + 1   //aqui estoy generando el numero de ID      
         this.usuariosDePrueba.push({id: lastIndex, name: user.name, email: user.email, password: user.password, tipo: user.tipo, sucursal: user.sucursal})
         //---------------------------------------------------------------------------------------------------
 
 
-        const token = jwt.sign({id: lastIndex}, process.env.MY_SECRET_TOKEN, {
-            expiresIn: 60*60*24
-        })
+        const token = provideToken(lastIndex)
 
         return {auth: true, token}
     }

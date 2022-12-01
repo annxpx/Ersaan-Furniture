@@ -30,7 +30,7 @@ export class productsController{
     }
 
     async modProduct(req: Request, res: Response): Promise <Response>{
-
+        const payload = req.body
         return res.json("producto modificado")
     }
 }

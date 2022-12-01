@@ -7,7 +7,9 @@ import {Banches_Products} from "../models/banches_products.models";
 import {Users_Products} from "../models/users_products.models";
 
 class Connection{
+
     public connection: Sequelize;
+    
     constructor(){
         dotenv.config();
 
