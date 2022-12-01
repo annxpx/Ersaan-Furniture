@@ -27,7 +27,7 @@ export class StoreController{
         this.router.get('/products', verifyToken, this.productsControllers.getProducts)
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
         this.router.patch('/buy/:id', verifyToken, this.productsControllers.buyProduct)
-        this.router.patch('/modproduct', verifyToken, this.productsControllers.modProduct)
+        this.router.patch('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
     }
 
 }

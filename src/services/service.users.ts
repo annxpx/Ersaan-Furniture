@@ -14,6 +14,10 @@ class UsersServices{
         return users
     }
 
+    public async getOneUser(id: number){
+        return this.usuariosDePrueba.find(valorActual=>valorActual.id==id)
+    }
+
     public async createUser(user){
         // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
         //ahora con estos datos añadimos el usuario en la base de datos, tabla usuarios

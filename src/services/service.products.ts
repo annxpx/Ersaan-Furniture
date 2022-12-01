@@ -1,5 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 import 'dotenv'
+import { modProductDto } from '../dtos/modProductDto'
+import { Index } from 'sequelize-typescript'
 
 class productsServices{
 
@@ -18,23 +20,46 @@ class productsServices{
 
     async getProduct(id:number){
         const producto = this.productosDePrueba.find(valorActual => valorActual.id==id)
-
-        return producto
+        if(!producto){
+            return {code: 400, message: "este producto no existe"}
+        }else{
+            return {code: 200, message: producto}
+        }
     }
 
     async buyProduct(id: number){
         const index = this.productosDePrueba.findIndex(valorActual => valorActual.id==id)
         if(!(index>=0)){
-            return {respuesta: false, message: "indice no existente"}
+            return {code: 400, message: "indice no existente"}
         }
 
         if(this.productosDePrueba[index].cantidad==0){
-            return {respuesta: false, message: "ya no hay stock de este producto"}
+            return {code: 400, message: "ya no hay stock de este producto"}
         }
 
         this.productosDePrueba[index].cantidad-=1
-        return {respuesta: true, message: "elemento comprado"}
+        return {code: 200, message: "elemento comprado"}
 
+    }
+
+    async modProduct(modProductDto: modProductDto, id: number){
+        const actualizaciones = Object.entries(modProductDto)
+
+        const producto = await this.getProduct(id)
+
+        if(!(producto.code==200)){
+            return {code:400, message: "este producto no existe"}
+        }
+
+        const indiceProducto = this.productosDePrueba.findIndex(valorActal => valorActal.id == id)
+        
+        actualizaciones.map((posicionActual) => {
+            if(posicionActual[1]!=''){
+                this.productosDePrueba[indiceProducto][`${posicionActual[0]}`] = posicionActual[1]
+            }
+        })
+
+        return {code: 200, message: this.productosDePrueba[indiceProducto] }
     }
                   
 }

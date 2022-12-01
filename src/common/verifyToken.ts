@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken'
-import { Request, Response, Router } from "express";
+import { Request, Response, Router,  } from "express";
 import 'dotenv'
 
 function verifyToken(req: Request, res: Response, next){
@@ -14,12 +14,13 @@ function verifyToken(req: Request, res: Response, next){
 
     try{
         const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
+        const payload = req.body
         req.body.userAccessData = {userId: decoded.id, token}
+        next()
     }
     catch{
         return res.status(406).json("el token provisto no es valido o ha expirado")
     }
-    next()
 }
 
 export default verifyToken
