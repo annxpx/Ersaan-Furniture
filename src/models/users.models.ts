@@ -19,11 +19,11 @@ export class Users extends Model {
     public username: string;
 
     @Column({
-        type: DataType.STRING(10),
+        type: DataType.INTEGER,
         allowNull: false,
         unique: true,
     })
-    public type: string;
+    public type: number;
     
     @Column({
         type: DataType.STRING(50),

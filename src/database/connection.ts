@@ -13,7 +13,7 @@ class Connection{
 
         this.connection = new Sequelize({
             dialect: "postgres",
-            port : 5432,
+            port : Number(process.env.DB_PORT),
             host: process.env.DB_HOST,
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
