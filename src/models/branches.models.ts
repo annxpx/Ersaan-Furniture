@@ -1,28 +1,37 @@
-﻿import { Model, Column, DataType, Table } from "sequelize-typescript";
-@Table({
-    tableName: 'branches'
-})
-export class Branches extends Model {
+﻿import {conn} from "../database/connection";
+import * as Sequelize from "sequelize-typescript";
+import {User} from "./users.models";
 
-    @Column({
-        type: DataType.INTEGER,
+export interface BranchesAddModel {
+    id: number;
+    branchName: string;
+    location: string;
+}
+export interface BranchModel extends Sequelize.Model<BranchesAddModel, BranchModel> {
+    id: number;
+    branchName: string;
+    location: string;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+}
+export  const Branch= conn.define<BranchModel, BranchesAddModel>("branches", {
+    id: {
+        type: Sequelize.DataType.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    })
-    public id: number;
-
-    @Column({
-        type: DataType.STRING(100),
+    },
+    branchName: {
+        type: Sequelize.DataType.STRING(50),
         allowNull: false,
         unique: true,
-    })
-    public username: string;
-
-    @Column({
-        type: DataType.STRING(250),
+    },
+    location: {
+        type: Sequelize.DataType.STRING(50),
         allowNull: false,
-        unique: true,
-    })
-    public location: string;
+    },
+});
 
-}    
+Branch.hasMany(User,
+    {foreignKey: 'id_branch',
+            sourceKey: 'id',
+            as: 'users'});
