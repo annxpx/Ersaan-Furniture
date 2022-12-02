@@ -1,6 +1,8 @@
 import * as jwt from 'jsonwebtoken'
 import 'dotenv'
 import provideToken from '../common/provideToken'
+import {User} from "../models/users.models";
+
 class UsersServices{
 
     private usuariosDePrueba = [
@@ -10,8 +12,8 @@ class UsersServices{
     ]
 
     public async getUsers(){
-        const users = this.usuariosDePrueba
-        return users
+        const usersDb = await User.findAll({});
+        return usersDb
     }
 
     public async getOneUser(id: number){

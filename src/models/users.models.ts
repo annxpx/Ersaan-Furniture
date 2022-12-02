@@ -1,45 +1,45 @@
-﻿import { Model, Column, DataType, Table } from "sequelize-typescript";
-@Table({
-    tableName: 'users'
-})
-export class Users extends Model {
+﻿import {conn} from "../database/connection";
+import * as Sequelize from "sequelize-typescript";
 
-    @Column({
-        type: DataType.INTEGER,
+
+export interface UserAddModel {
+    id: number;
+    username: string;
+    type: number;
+    email: string;
+    password: string;
+}
+export interface UserModel extends Sequelize.Model<UserAddModel, UserModel> {
+    id: number;
+    username: string;
+    type: number;
+    email: string;
+    password: string;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+}
+export  const User= conn.define<UserModel, UserAddModel>("users", {
+    id: {
+        type: Sequelize.DataType.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    })
-    public id: number;
-    
-    @Column({
-        type: DataType.STRING(75),
+    },
+    username: {
+        type: Sequelize.DataType.STRING(30),
         allowNull: false,
         unique: true,
-    })
-    public username: string;
+    },
+    type: {
+        type: Sequelize.DataType.INTEGER,
+        allowNull: false,
+    },
+    email: {
+        type: Sequelize.DataType.STRING(30),
+        allowNull: false,
+    },
+    password: {
+        type: Sequelize.DataType.STRING(15),
+        allowNull: false,
+    }
+});
 
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-        unique: true,
-    })
-    public type: number;
-    
-    @Column({
-        type: DataType.STRING(50),
-        allowNull: false,
-        unique: true,
-    })
-    public email: string;
-    
-    @Column({
-        type: DataType.STRING(15),
-    })
-    public password: string;
-
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: true,
-    })
-    public id_branches: number;
-}    

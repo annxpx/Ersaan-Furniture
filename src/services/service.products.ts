@@ -2,6 +2,7 @@ import * as jwt from 'jsonwebtoken'
 import 'dotenv'
 import { modProductDto } from '../dtos/modProductDto'
 import { Index } from 'sequelize-typescript'
+import {Product} from "../models/products.models";
 
 class productsServices{
 
@@ -12,10 +13,9 @@ class productsServices{
         {id: 4, name: "mesa", precio: 2500, marca: "gibson", status: "usado", width: 30, length: 30, height: 50, color: "cafe", material: "madera", cantidad: 2, pieces: 1, sucursal: 2}
     ]
 
-    async getProducts(){
-        const products = this.productosDePrueba
-
-        return products
+    public async getProducts(){
+        const productsDb = await Product.findAll({});
+        return productsDb;
     }
 
     async getProduct(id:number){

@@ -1,40 +1,54 @@
-import { Length, IsNotEmpty } from "class-validator";
-
+import {Length, IsNotEmpty, MAX, MIN} from "class-validator";
 
 export class modProductDto {
-    @Length(0,250, {message: "El nombre no puede ser mayor a 250 caracteres!"})
-    name: string
-    
-    @Length(0,10, {message: "debe ingresar un precio para el producto valido!"})
-    precio: number
+    @Length(0,250, {
+        message: 'Name must be less than 250 characters'
+    })
+    productName: string
 
-    @Length(0,50, {message: "la marca no puede tener mas de 50 caracteres"})
-    marca: string
+    @MIN(20)
+    @MAX(4000)
+    price: number
 
-    @Length(0,50, {message: "el estado no puede tener mas de 50 caracteres!"})
+    @Length(0,50, {
+        message: 'Brand must be less than 50 characters'
+    })
+    brand: string
+
+    @Length(5,20, {
+        message: 'Status must be between 5 and 20 characters'
+    })
     status: string
-
-    @Length(0,10, {message: "debe ingresar un ancho valido para el producto!"})
+    @MIN(0)
+    @MAX(4)
     width: number
 
-    @Length(0,10, {message: "debe ingresar un largo valido para el producto!"})
+    @MIN(0)
+    @MAX(4)
     lenght: number
 
-    @Length(0,10, {message: "debe ingresar un alto valido para el producto!"})
+    @MIN(0)
+    @MAX(4)
     height: number
 
-    @Length(0,50, {message: "el color no puede tener mas de 50 caracteres"})
+    @Length(3,50, {
+        message: 'Color must be less than 50 characters'
+    })
     color: string
 
-    @Length(0,50, {message: "el material no puede tener mas de 50 caracteres!"})
+    @Length(3,50, {
+        message: 'Material must be less than 50 characters'
+    })
     material: string
 
-    @Length(0,10, {message: "debe ingresar una cantidad valida para el producto!"})
-    cantidad: number
+    @MIN(1)
+    @MAX(200)
+    quantity: number
 
-    @Length(0,10, {message: "debe ingresar una cantidad de piezas valida!"})
+    @MIN(1)
+    @MAX(20)
     pieces: number
 
-    @Length(0,10, {message: "debe ingresar una sucursal valida!"})
-    sucursal: number
+   /* @Length(0,10, {message: "debe ingresar una sucursal valida!"})
+    sucursal: number*/
 }
