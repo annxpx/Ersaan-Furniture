@@ -14,23 +14,23 @@ export interface Branches_ProductsModel extends Sequelize.Model<Branches_Product
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-export  const Branches_Products= conn.define<Branches_ProductsModel, Branches_ProductsAddModel>("branches_products", {
-    id_product: {
-        type: Sequelize.DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+export  const Branches_Products= conn.define<Branches_ProductsModel, Branches_ProductsAddModel>("branches_products",
+    {
+        id_product: {
+            type: Sequelize.DataType.INTEGER,
     },
-    id_branch: {
-        type: Sequelize.DataType.INTEGER,
-        allowNull: false,
+        id_branch: {
+            type: Sequelize.DataType.INTEGER,
     }
-});
+    });
 
-Branches_Products.hasMany(Product,
-    {foreignKey: 'id',
-        sourceKey: 'id_product',
-        as: 'products'});
-Branches_Products.hasMany(Branch,
-    {foreignKey: 'id',
-        sourceKey: 'id_branch',
-        as: 'branches'});
+Product.belongsToMany(Branch, { 
+    through: Branches_Products,
+    foreignKey: 'id_product',
+    otherKey: 'id_branch',
+});
+Branch.belongsToMany(Product, { 
+    through: Branches_Products,
+    foreignKey: 'id_branch',
+    otherKey: 'id_product',
+});
