@@ -1,5 +1,7 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
+import {Branch} from "./branches.models";
+import {Branches_Products} from "./branches_products.models";
 
 
 export interface ProductAddModel{
@@ -84,3 +86,5 @@ export  const Product= conn.define<ProductModel, ProductAddModel>("products", {
         allowNull: false,
     },
 });
+Product.belongsToMany(Branch, { through: Branches_Products });
+Branch.belongsToMany(Product, { through: Branches_Products });
