@@ -1,13 +1,13 @@
-import {Length, IsNotEmpty, MAX, MIN} from "class-validator";
+import {Length, IsInt, Max, Min} from "class-validator";
 
 export class modProductDto {
     @Length(0,250, {
         message: 'Name must be less than 250 characters'
     })
     productName: string
-
-    @MIN(20)
-    @MAX(4000)
+    @IsInt()
+    @Min(20)
+    @Max(4000)
     price: number
 
     @Length(0,50, {
@@ -19,16 +19,19 @@ export class modProductDto {
         message: 'Status must be between 5 and 20 characters'
     })
     status: string
-    @MIN(0)
-    @MAX(4)
+    @IsInt()
+    @Min(0)
+    @Max(4)
     width: number
 
-    @MIN(0)
-    @MAX(4)
+    @IsInt()
+    @Min(0)
+    @Max(4)
     lenght: number
 
-    @MIN(0)
-    @MAX(4)
+    @IsInt()
+    @Min( 0)
+    @Max(4)
     height: number
 
     @Length(3,50, {
@@ -41,12 +44,14 @@ export class modProductDto {
     })
     material: string
 
-    @MIN(1)
-    @MAX(200)
+    @IsInt()
+    @Min(1)
+    @Max(200)
     quantity: number
 
-    @MIN(1)
-    @MAX(20)
+    @IsInt()
+    @Min(1)
+    @Max(20)
     pieces: number
 
    /* @Length(0,10, {message: "debe ingresar una sucursal valida!"})

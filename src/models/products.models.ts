@@ -15,7 +15,6 @@ export interface ProductAddModel{
     material: string;
     pieces: number;
     quantity: number;
-  //  branches_id: number;
 }
 export interface ProductModel extends Sequelize.Model<ProductAddModel, ProductModel> {
     id: number;
@@ -30,7 +29,6 @@ export interface ProductModel extends Sequelize.Model<ProductAddModel, ProductMo
     material: string;
     pieces: number;
     quantity: number;
-  //  branches_id: number;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
@@ -85,8 +83,4 @@ export  const Product= conn.define<ProductModel, ProductAddModel>("products", {
         type: Sequelize.DataType.INTEGER,
         allowNull: false,
     },
-   /* branches_id: {
-        type: Sequelize.DataType.INTEGER,
-        allowNull: false,
-    }*/
 });
