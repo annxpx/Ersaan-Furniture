@@ -1,24 +1,31 @@
-import { Length, IsNotEmpty } from "class-validator";
+import {Length, IsNotEmpty, MIN, MAX} from "class-validator";
 
 
 export class createUserDto {
-    @Length(1,20, {message: "El nombre no puede ser mayor a 20 caracteres!"})
+    @Length(3,30, {
+        message: 'Username must be between 3 and 30 characters'
+        })
     @IsNotEmpty()
-    name: string
+    username: string
 
-    @Length(7,30, {message: "Debe ingresar un correo valido!"})
+    @Length(7,30, {
+    message: 'Password must be between 7 and 30 characters'})
     @IsNotEmpty()
     email: string
 
-    @Length(1,15, {message: "La contraseña no puede tener mas de 15 caracteres!"})
+    @Length(4,15, {
+    message: 'Password must be between 4 and 15 characters'})
     @IsNotEmpty()
     password: string
-
-    @Length(1,1, {message:"el tipo de usuario puede ser 0 o 1"})
+/*
+    @MIN(0)
+    @MAX(1)
+    type: number
+    */
+   /* @MIN(1,{
+        message: 'Branch must be at least 1'})
+    @MAX(10,{
+        message: 'Branch must be at most 10'})
     @IsNotEmpty()
-    tipo: number
-
-    @Length(1, 10, {message:"debe ser un ID numerico"})
-    @IsNotEmpty()
-    sucursal: number
+    id_branches: number*/
 }

@@ -1,12 +1,14 @@
 import express, {json, urlencoded} from 'express'
 import { StoreController } from './controllers/controller';
-import Connection from './database/connection';
+import {conn} from './database/connection';
+import {Product} from "./models/products.models";
+import {User} from "./models/users.models";
+import {Branch} from "./models/branches.models";
 
 class App{
 
     public express : express.Application;
     storeController : StoreController
-    private connection: Connection | undefined;
 
 
     constructor(){
@@ -22,9 +24,11 @@ class App{
         this.express.use(urlencoded({extended: false}))
     }
     db(){
-        this.connection = new Connection();
-        this.connection.connection.sync()
+        conn.sync()
             .then(() => {
+                Product.sync();
+                User.sync();
+                Branch.sync();
                 console.log(`Database is connected`);
             })
             .catch((err)=> {
