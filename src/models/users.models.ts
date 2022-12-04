@@ -1,5 +1,6 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
+import {Product} from "./products.models";
 
 
 export interface UserAddModel {
@@ -42,4 +43,8 @@ export  const User= conn.define<UserModel, UserAddModel>("users", {
         allowNull: false,
     }
 });
-
+User.belongsToMany(Product, {
+    through: 'user_product',
+    foreignKey: 'id_user',
+        otherKey: 'id_product',
+    as: 'products'});

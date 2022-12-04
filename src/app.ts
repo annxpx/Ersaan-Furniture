@@ -4,7 +4,6 @@ import {conn} from './database/connection';
 import {Product} from "./models/products.models";
 import {User} from "./models/users.models";
 import {Branch} from "./models/branches.models";
-import {Branches_Products} from "./models/branches_products.models";
 
 class App{
 
@@ -30,7 +29,6 @@ class App{
                 Product.sync();
                 User.sync();
                 Branch.sync();
-                Branches_Products.sync();
                 console.log(`Database is connected`);
             })
             .catch((err)=> {
