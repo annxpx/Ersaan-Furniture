@@ -1,8 +1,6 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
 import {User} from "./users.models";
-import {Product} from "./products.models";
-
 export interface BranchesAddModel {
     id: number;
     branchName: string;
@@ -32,12 +30,6 @@ export  const Branch= conn.define<BranchModel, BranchesAddModel>("branches", {
     },
 });
 
-Branch.belongsToMany(Product, {
-    through: 'branches_products',
-    foreignKey: 'id_branch',
-    sourceKey: 'id',
-    otherKey: 'id_product',
-});
 Branch.hasMany(User,
     {foreignKey: 'id_branch',
         sourceKey: 'id',

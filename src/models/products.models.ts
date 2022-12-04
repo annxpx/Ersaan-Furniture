@@ -3,7 +3,7 @@ import * as Sequelize from "sequelize-typescript";
 import {User} from "./users.models";
 import {Branch} from "./branches.models";
 
-export interface ProductAddModel{
+export interface ProductAddModel {
     id: number;
     productName: string;
     price: number;
@@ -17,6 +17,7 @@ export interface ProductAddModel{
     pieces: number;
     quantity: number;
 }
+
 export interface ProductModel extends Sequelize.Model<ProductAddModel, ProductModel> {
     id: number;
     productName: string;
@@ -33,7 +34,8 @@ export interface ProductModel extends Sequelize.Model<ProductAddModel, ProductMo
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-export  const Product= conn.define<ProductModel, ProductAddModel>("products", {
+
+export const Product = conn.define<ProductModel, ProductAddModel>("products", {
     id: {
         type: Sequelize.DataType.INTEGER,
         primaryKey: true,
@@ -85,14 +87,21 @@ export  const Product= conn.define<ProductModel, ProductAddModel>("products", {
         allowNull: false,
     },
 });
+
+/*
 Product.belongsToMany(User, {
-    through: 'user_product',
-    foreignKey: 'id_product',
-    otherKey: 'id_user',
-    as: 'users'});
+    through: 'user_product'});
 
 Product.belongsToMany(Branch, {
-    through: 'branches_products',
-    foreignKey: 'id_product',
-    otherKey: 'id_branch',
-});
+    through: 'branches_products'});
+*/
+
+export const BranchProduct = conn.define('branch_product', {});
+Branch.belongsToMany(Product, {through: BranchProduct});
+Product.belongsToMany(Branch, {through: BranchProduct});
+
+export const UserProduct = conn.define('user_product', {});
+User.belongsToMany(Product, {through: UserProduct});
+Product.belongsToMany(User, {through: UserProduct});
+
+//user.addProduct(product, { through: { role: 'manager' }});
