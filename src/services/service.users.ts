@@ -2,8 +2,11 @@ import * as jwt from 'jsonwebtoken'
 import 'dotenv'
 import provideToken from '../common/provideToken'
 import {User} from "../models/users.models";
+import {ResponseDto} from "../common/ResponseDto";
+import { Branch } from '../models/branches.models';
 
 class UsersServices{
+    private responseDto: ResponseDto;
 
     private usuariosDePrueba = [
         { id: 1, name: "Andrea", email: "andrea@gmail.com", password: "123", tipo: 0, sucursal: 1},
@@ -12,8 +15,18 @@ class UsersServices{
     ]
 
     public async getUsers(){
-        const usersDb = await User.findAll({});
-        return usersDb
+        this.responseDto = new ResponseDto();
+        try{
+            this.responseDto.data = await User.findAll({});
+            this.responseDto.code = 200;
+            this.responseDto.message = 'Listado de Usuarios de la base de datos';
+            return this.responseDto;
+        }catch(error){
+            this.responseDto.code = 500;
+            this.responseDto.message = 'Error en el servidor';
+            console.log({error});
+            return this.responseDto;
+        }
     }
 
     public async getOneUser(req: Request){

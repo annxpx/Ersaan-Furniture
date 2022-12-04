@@ -14,7 +14,6 @@ function verifyToken(req: Request, res: Response, next){
 
     try{
         const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
-        const payload = req.body
         req.body.userAccessData = {userId: decoded.id, token}
         next()
     }

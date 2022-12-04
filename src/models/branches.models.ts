@@ -30,8 +30,8 @@ export  const Branch= conn.define<BranchModel, BranchesAddModel>("branches", {
     },
 });
 
-Branch.hasMany(User,
+/*Branch.hasMany(User,
     {foreignKey: 'id_branch',
         sourceKey: 'id',
-        as: 'users'});
+        as: 'users'});*/
 
