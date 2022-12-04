@@ -14,8 +14,14 @@ class UsersServices{
         return users
     }
 
-    public async getOneUser(id: number){
-        return this.usuariosDePrueba.find(valorActual=>valorActual.id==id)
+    public async getOneUser(req: Request){
+        const token = req.headers['x-access-token']
+        try{
+            const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
+            return decoded.id;
+        }catch{
+            return {code: 400, message: "indice no existente"}
+        }
     }
 
     public async createUser(user){
@@ -42,8 +48,13 @@ class UsersServices{
         }
     }
 
-    public async changePassword(id){
-
+    public async changePassword(newPassword: string, req: any){
+        const index = await this.getOneUser(req);
+        if(!(index>=0)){
+            return false;
+        }
+        this.usuariosDePrueba[index-1].password = newPassword;
+        return true;
     }
 
     

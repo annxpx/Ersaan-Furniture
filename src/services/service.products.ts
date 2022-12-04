@@ -28,7 +28,8 @@ class productsServices{
     }
 
     async buyProduct(id: number){
-        const index = this.productosDePrueba.findIndex(valorActual => valorActual.id==id)
+        const index = this.productosDePrueba.findIndex(valorActual => valorActual.id==id);
+        const producto = this.productosDePrueba.find(valorActual => valorActual.id==id);
         if(!(index>=0)){
             return {code: 400, message: "indice no existente"}
         }
@@ -38,7 +39,7 @@ class productsServices{
         }
 
         this.productosDePrueba[index].cantidad-=1
-        return {code: 200, message: "elemento comprado"}
+        return {code: 200, message:producto}
 
     }
 

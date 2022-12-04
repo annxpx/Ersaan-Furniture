@@ -2,12 +2,13 @@ import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
 import { validate } from "class-validator";
 import { createUserDto } from "../dtos/createUserDto";
+import {ChangePassDto} from "../dtos/changePassDto";
 import UserServices from "../services/service.users";
 import { LogInDto } from "../dtos/logInDto";
 import serviceUsers from "../services/service.users";
 import * as jwt from 'jsonwebtoken'
 import provideToken from "../common/provideToken";
-
+import verifyToken from "../common/verifyToken";
 export class UserCOntroller{
 
     async logIn(req: Request, res: Response): Promise <Response>{
@@ -53,9 +54,12 @@ export class UserCOntroller{
 
     //este metodo solo es accesible si el usuario tiene token---------------------
     async changePassword(req: Request, res: Response): Promise <Response>{
-        
-
-        return res.json("contraseña guardada")
+        const  payload = plainToClass(ChangePassDto,req.body);
+        const resultadoPeticion = await UserServices.changePassword(payload.password, req);
+        if(!resultadoPeticion){
+            return res.status(400).json("No se pudo cambiar la contraseña")
+        }
+        return res.status(200).json("contraseña guardada")
     }
    
 }
