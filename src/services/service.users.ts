@@ -39,6 +39,7 @@ class UsersServices{
         }
     }
 
+
     public async createUser(user){
         // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
         //ahora con estos datos añadimos el usuario en la base de datos, tabla usuarios
@@ -54,10 +55,11 @@ class UsersServices{
 
     public async logIn(login){
         const { email, password } = login
-        const user = this.usuariosDePrueba.find(valorActual => valorActual.email == email)
-
+        this.responseDto = new ResponseDto();
+        const user = await User.findOne({where: {email}});
+        console.log(this.responseDto.message);
         if(user && user.password == password){
-            return user
+            return user;
         }else{
             return false
         }
