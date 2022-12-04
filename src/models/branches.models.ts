@@ -32,7 +32,14 @@ export  const Branch= conn.define<BranchModel, BranchesAddModel>("branches", {
     },
 });
 
+Branch.belongsToMany(Product, {
+    through: 'branches_products',
+    foreignKey: 'id_branch',
+    sourceKey: 'id',
+    otherKey: 'id_product',
+});
 Branch.hasMany(User,
     {foreignKey: 'id_branch',
-            sourceKey: 'id',
-            as: 'users'});
+        sourceKey: 'id',
+        as: 'users'});
+
