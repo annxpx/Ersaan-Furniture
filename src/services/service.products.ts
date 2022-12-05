@@ -3,8 +3,11 @@ import 'dotenv'
 import { modProductDto } from '../dtos/modProductDto'
 import { Index } from 'sequelize-typescript'
 import {Product} from "../models/products.models";
+import {ResponseDto} from "../common/ResponseDto";
 
 class productsServices{
+
+    private responseDto : ResponseDto;
 
     productosDePrueba = [
         {id: 1, name: "sillon", precio: 500, marca: "gibson", status: "nuevo", width: 30, length: 30, height: 50, color: "negro", material: "madera", cantidad: 2, pieces: 1, sucursal: 1},
@@ -14,8 +17,18 @@ class productsServices{
     ]
 
     public async getProducts(){
-        const productsDb = await Product.findAll({});
-        return productsDb;
+        this.responseDto = new ResponseDto();
+        try{
+            this.responseDto.data = await Product.findAll({});
+            this.responseDto.code = 200;
+            this.responseDto.message = 'Listado de Productos de la base de datos';
+            return this.responseDto;
+        }catch(error){
+            this.responseDto.code = 500;
+            this.responseDto.message = 'Error en el servidor';
+            console.log({error});
+            return this.responseDto;
+        }
     }
 
     async getProduct(id:number){

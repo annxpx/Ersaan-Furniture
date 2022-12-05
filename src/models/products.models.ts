@@ -88,20 +88,6 @@ export const Product = conn.define<ProductModel, ProductAddModel>("products", {
     },
 });
 
-/*
-Product.belongsToMany(User, {
-    through: 'user_product'});
-
-Product.belongsToMany(Branch, {
-    through: 'branches_products'});
-*/
-
-export const BranchProduct = conn.define('branch_product', {});
+export const BranchProduct = conn.define('branch_product', {}, {timestamps:false});
 Branch.belongsToMany(Product, {through: BranchProduct});
 Product.belongsToMany(Branch, {through: BranchProduct});
-
-export const UserProduct = conn.define('user_product', {});
-User.belongsToMany(Product, {through: UserProduct});
-Product.belongsToMany(User, {through: UserProduct});
-
-//user.addProduct(product, { through: { role: 'manager' }});
