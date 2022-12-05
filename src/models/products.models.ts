@@ -1,6 +1,5 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
-import {User} from "./users.models";
 import {Branch} from "./branches.models";
 
 export interface ProductAddModel {
@@ -88,13 +87,21 @@ export const Product = conn.define<ProductModel, ProductAddModel>("products", {
     },
 });
 
+
+
+Branch.hasMany(Product,
+    {foreignKey: 'id_branch',
+        sourceKey: 'id',
+        as: 'branch'});
+
 /*
+/!*
 Product.belongsToMany(User, {
     through: 'user_product'});
 
 Product.belongsToMany(Branch, {
     through: 'branches_products'});
-*/
+*!/
 
 export const BranchProduct = conn.define('branch_product', {});
 Branch.belongsToMany(Product, {through: BranchProduct});
@@ -104,4 +111,4 @@ export const UserProduct = conn.define('user_product', {});
 User.belongsToMany(Product, {through: UserProduct});
 Product.belongsToMany(User, {through: UserProduct});
 
-//user.addProduct(product, { through: { role: 'manager' }});
+//user.addProduct(product, { through: { role: 'manager' }});*/
