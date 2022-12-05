@@ -4,6 +4,7 @@ import { validate } from "class-validator";
 import productServices from "../services/service.products";
 import serviceUsers from "../services/service.users";
 import { modProductDto } from "../dtos/modProductDto";
+import serviceProducts from "../services/service.products";
 
 export class productsController{
     async getProducts(req: Request, res: Response): Promise <Response>{
@@ -13,10 +14,26 @@ export class productsController{
     }
 
     async getProduct(req: Request, res: Response): Promise <Response>{
-        const {id}= req.params
-        const resultadoPeticion = await productServices.getProduct(+id)
+        const {id}= req.params;
+        const responseDto = await productServices.getProduct(+id)
 
-        return res.status(resultadoPeticion.code).json(resultadoPeticion.message)
+        return res.status(responseDto.code).json({
+            message: responseDto.message,
+            data: responseDto.data
+        });
+    }
+
+    async createProduct(req: Request, res: Response): Promise <Response>{
+        const  payload = req.body
+        const contenidoPeticion = plainToClass(modProductDto, payload)
+        const errors = await validate(contenidoPeticion)
+
+        if(errors.length){
+            console.log(errors)
+            return res.status(400).json("Error en los datos enviados")
+        }
+
+        return res.status(200).json(await serviceProducts.createProduct(contenidoPeticion))
     }
 
     async buyProduct(req: Request, res: Response): Promise <Response>{

@@ -5,9 +5,10 @@ export class modProductDto {
         message: 'Name must be less than 250 characters'
     })
     productName: string
-    @IsInt()
+    
+    /*@IsInt()
     @Min(20)
-    @Max(4000)
+    @Max(4000)*/
     price: number
 
     @Length(0,50, {
@@ -19,19 +20,20 @@ export class modProductDto {
         message: 'Status must be between 5 and 20 characters'
     })
     status: string
-    @IsInt()
+    
+    /*@IsInt()
     @Min(0)
-    @Max(4)
+    @Max(4)*/
     width: number
 
     @IsInt()
-    @Min(0)
-    @Max(4)
-    lenght: number
+    @Min(1)
+    @Max(100)
+    length: number
 
-    @IsInt()
+    /*@IsInt()
     @Min( 0)
-    @Max(4)
+    @Max(4)*/
     height: number
 
     @Length(3,50, {
@@ -44,16 +46,16 @@ export class modProductDto {
     })
     material: string
 
-    @IsInt()
+    /*@IsInt()
     @Min(1)
-    @Max(200)
+    @Max(200)*/
     quantity: number
 
-    @IsInt()
+    /*@IsInt()
     @Min(1)
-    @Max(20)
+    @Max(20)*/
     pieces: number
 
-   /* @Length(0,10, {message: "debe ingresar una sucursal valida!"})
-    sucursal: number*/
+   //@Length(0,10, {message: "debe ingresar una sucursal valida!"})
+    id_branches: number
 }

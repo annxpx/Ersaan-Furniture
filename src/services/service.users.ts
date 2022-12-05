@@ -43,31 +43,17 @@ class UsersServices{
 
 
     public async createUser(createUserDto: createUserDto){
-        // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
-        //ahora con estos datos añadimos el usuario en la base de datos, tabla usuarios
         this. responseDto = new ResponseDto();
         try {
-            //const token = provideToken(lastIndex)
-            //return {auth: true, token}
             this.responseDto.data = User.create(createUserDto);
             this.responseDto.code = 201;
             this.responseDto.message = 'Usuario creado con exito';
         } catch (error) {
-            /*if(error.parent.code == '23505'){
-                this.responseDto.code=400;
-                this.responseDto.message= 'No se puede crear un usuario repetido';
-                return this.responseDto;
-            }*/
             this.responseDto.code = 500;
             this.responseDto.message = 'Error al crear el usuario';
             return this.responseDto;
             
         }
-        /*const lastIndex = this.usuariosDePrueba.at(-1).id + 1   //aqui estoy generando el numero de ID      
-        this.usuariosDePrueba.push({id: lastIndex, name: user.name, email: user.email, password: user.password, tipo: user.tipo, sucursal: user.sucursal})
-        const token = provideToken(lastIndex)
-
-        return {auth: true, token}*/
     }
 
     public async logIn(login){

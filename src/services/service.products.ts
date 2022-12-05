@@ -32,11 +32,30 @@ class productsServices{
     }
 
     async getProduct(id:number){
-        const producto = this.productosDePrueba.find(valorActual => valorActual.id==id)
+        this. responseDto = new ResponseDto();
+        const producto = await Product.findOne({where: {id}});
+        console.log(`el producto es :${producto}`);
         if(!producto){
-            return {code: 400, message: "este producto no existe"}
-        }else{
-            return {code: 200, message: producto}
+            this.responseDto.message = `El producto que busca no se encuentra`;
+            this.responseDto.code = 404;
+            return this.responseDto;
+        }
+        this.responseDto.code = 200;
+        this.responseDto.message = "Producto solicitado"
+        this.responseDto.data = producto;
+        return this.responseDto;
+    }
+
+    async createProduct(modProduct: modProductDto){
+        this. responseDto = new ResponseDto();
+        try {
+            this.responseDto.data = Product.create(modProduct);
+            this.responseDto.code = 201;
+            this.responseDto.message = 'Producto ingresado con exito';
+        } catch (error) {
+            this.responseDto.code = 500;
+            this.responseDto.message = 'Error al ingresar el producto';
+            return this.responseDto; 
         }
     }
 

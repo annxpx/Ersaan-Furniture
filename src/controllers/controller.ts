@@ -26,6 +26,7 @@ export class StoreController{
         //peticiones de la aplicacion: productos
         this.router.get('/products', verifyToken, this.productsControllers.getProducts)
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
+        this.router.post('/addProduct', verifyToken, this.productsControllers.createProduct)
         this.router.patch('/buy/:id', verifyToken, this.productsControllers.buyProduct)
         this.router.patch('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
     }
