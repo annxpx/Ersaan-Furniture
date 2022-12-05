@@ -33,6 +33,7 @@ export  const User= conn.define<UserModel, UserAddModel>("users", {
     },
     type: {
         type: Sequelize.DataType.INTEGER,
+        unique : false,
         allowNull: false,
     },
     email: {

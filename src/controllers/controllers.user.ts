@@ -54,8 +54,8 @@ export class UserCOntroller{
 
     //este metodo solo es accesible si el usuario tiene token---------------------
     async changePassword(req: Request, res: Response): Promise <Response>{
-        const  payload = plainToClass(ChangePassDto,req.body);
-        const resultadoPeticion = await UserServices.changePassword(payload.password, req);
+        const  payload = plainToClass(ChangePassDto, req.body);
+        const resultadoPeticion = await UserServices.changePassword(payload, req);
         if(!resultadoPeticion){
             return res.status(400).json("No se pudo cambiar la contraseña")
         }

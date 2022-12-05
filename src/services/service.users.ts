@@ -4,6 +4,8 @@ import provideToken from '../common/provideToken'
 import {User} from "../models/users.models";
 import {ResponseDto} from "../common/ResponseDto";
 import { Branch } from '../models/branches.models';
+import {createUserDto} from '../dtos/createUserDto';
+import {ChangePassDto} from '../dtos/changePassDto';
 
 class UsersServices{
     private responseDto: ResponseDto;
@@ -40,17 +42,32 @@ class UsersServices{
     }
 
 
-    public async createUser(user){
+    public async createUser(createUserDto: createUserDto){
         // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
         //ahora con estos datos añadimos el usuario en la base de datos, tabla usuarios
-        const lastIndex = this.usuariosDePrueba.at(-1).id + 1   //aqui estoy generando el numero de ID      
+        this. responseDto = new ResponseDto();
+        try {
+            //const token = provideToken(lastIndex)
+            //return {auth: true, token}
+            this.responseDto.data = User.create(createUserDto);
+            this.responseDto.code = 201;
+            this.responseDto.message = 'Usuario creado con exito';
+        } catch (error) {
+            /*if(error.parent.code == '23505'){
+                this.responseDto.code=400;
+                this.responseDto.message= 'No se puede crear un usuario repetido';
+                return this.responseDto;
+            }*/
+            this.responseDto.code = 500;
+            this.responseDto.message = 'Error al crear el usuario';
+            return this.responseDto;
+            
+        }
+        /*const lastIndex = this.usuariosDePrueba.at(-1).id + 1   //aqui estoy generando el numero de ID      
         this.usuariosDePrueba.push({id: lastIndex, name: user.name, email: user.email, password: user.password, tipo: user.tipo, sucursal: user.sucursal})
-        //---------------------------------------------------------------------------------------------------
-
-
         const token = provideToken(lastIndex)
 
-        return {auth: true, token}
+        return {auth: true, token}*/
     }
 
     public async logIn(login){
@@ -65,12 +82,16 @@ class UsersServices{
         }
     }
 
-    public async changePassword(newPassword: string, req: any){
-        const index = await this.getOneUser(req);
-        if(!(index>=0)){
+    public async changePassword(newPassword: ChangePassDto, req: any){
+        const id = await this.getOneUser(req);
+        if(!(id>=0)){
             return false;
         }
-        this.usuariosDePrueba[index-1].password = newPassword;
+        const newPass = {
+                id,
+                ...newPassword
+        };
+        const updatePass = await User.update(newPass, {where:{id}});
         return true;
     }
 
