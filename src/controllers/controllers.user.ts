@@ -9,19 +9,21 @@ import serviceUsers from "../services/service.users";
 import * as jwt from 'jsonwebtoken'
 import provideToken from "../common/provideToken";
 import verifyToken from "../common/verifyToken";
+import {modProductDto} from "../dtos/modProductDto";
+import productServices from "../services/service.products";
 export class UserCOntroller{
 
     async logIn(req: Request, res: Response): Promise <Response>{
         const payload = req.body
-        const contenidoPeticion = plainToClass(LogInDto, payload)
-        const errors = await validate(contenidoPeticion)
+        const data = plainToClass(LogInDto, payload)
+        const errors = await validate(data)
 
         if(errors.length){
             console.log(errors);
             return res.status(400).json("errores en los datos de inicio de sesion")
         }
  
-        const usuario = await serviceUsers.logIn(contenidoPeticion)
+        const usuario = await serviceUsers.logIn(data)
 
         if(!usuario){
             return res.status(401).json("Email o contraseña no validos")
@@ -34,15 +36,15 @@ export class UserCOntroller{
 
     async singUp(req: Request, res: Response): Promise <Response>{
         const  payload = req.body
-        const contenidoPeticion = plainToClass(createUserDto, payload)
-        const errors = await validate(contenidoPeticion)
+        const data = plainToClass(createUserDto, payload)
+        const errors = await validate(data)
 
         if(errors.length){
             console.log(errors)
             return res.status(400).json("Error en los datos enviados")
         }
 
-        return res.status(200).json(await serviceUsers.createUser(contenidoPeticion))
+        return res.status(200).json(await serviceUsers.createUser(data))
     }
     
     //este metodo solo es accesible si el usuario tiene token---------------------
@@ -55,11 +57,36 @@ export class UserCOntroller{
     //este metodo solo es accesible si el usuario tiene token---------------------
     async changePassword(req: Request, res: Response): Promise <Response>{
         const  payload = plainToClass(ChangePassDto, req.body);
-        const resultadoPeticion = await UserServices.changePassword(payload, req);
-        if(!resultadoPeticion){
+        const results = await UserServices.changePassword(payload, req);
+        if(!results){
             return res.status(400).json("No se pudo cambiar la contraseña")
         }
         return res.status(200).json("contraseña guardada")
+    }
+    async changeType(req: Request, res: Response): Promise <Response> {
+
+        const {id}= req.params
+        const userTypeProvided = req.body.userAccessData.type
+        const userData =  await serviceUsers.getOneUser(userTypeProvided)
+        if(!userData){
+            return res.status(400).json("A login is required")
+        }
+        if(userData.tipo==0){
+            return res.status(400).json("You are not an admin")
+        }
+        delete req.body.userAccessData
+        const payload = req.body
+        const data = plainToClass(modProductDto, payload)
+        const errors = await validate(data)
+
+        if(errors.length){
+            return res.status(400).json(errors)
+        }
+
+        const results = await productServices.modProduct(data, +id)
+        return res.status(results.code).json(results.message)
+        
+    
     }
    
 }

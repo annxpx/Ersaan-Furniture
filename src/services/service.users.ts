@@ -6,6 +6,7 @@ import {ResponseDto} from "../common/ResponseDto";
 import { Branch } from '../models/branches.models';
 import {createUserDto} from '../dtos/createUserDto';
 import {ChangePassDto} from '../dtos/changePassDto';
+import {ChangeTypeDto} from "../dtos/changeTypeDto";
 
 class UsersServices{
     private responseDto: ResponseDto;
@@ -40,7 +41,7 @@ class UsersServices{
             return {code: 400, message: "indice no existente"}
         }
     }
-
+    
 
     public async createUser(createUserDto: createUserDto){
         // TODO: realizar esta accion con la base de datos en lugar del objeto usuariosPrueba
@@ -81,7 +82,22 @@ class UsersServices{
             return false
         }
     }
-
+    public async changeType(newType: ChangeTypeDto, req: any, res: Response) {
+        const id = await this.getOneUser(req);
+        if (id === 0) {
+            this.responseDto = new ResponseDto();
+            this.responseDto.code = 400;
+            this.responseDto.message = 'No se puede cambiar el tipo de usuario';
+            return this.responseDto;
+        }
+            const new = {
+                id,
+                ...newType
+            };
+            const updateType = await User.update(new, {where: {type}});
+            return true;
+        
+    }
     public async changePassword(newPassword: ChangePassDto, req: any){
         const id = await this.getOneUser(req);
         if(!(id>=0)){

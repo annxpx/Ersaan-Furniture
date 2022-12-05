@@ -31,21 +31,21 @@ export class productsController{
         const userIdProvided = req.body.userAccessData.userId
         const userData =  await serviceUsers.getOneUser(userIdProvided)
         if(!userData){
-            return res.status(400).json("como lograste llegar hasta aqui si no has iniciado sesion?")
+            return res.status(400).json("A login is required")
         }
         if(userData.tipo==0){
-            return res.status(400).json("El usuario actual no tiene los privilegios suficientes para realizar esta accion")
+            return res.status(400).json("You are not an admin")
         }
         delete req.body.userAccessData
         const payload = req.body
-        const contenidoPeticion = plainToClass(modProductDto, payload)
-        const errors = await validate(contenidoPeticion)
+        const data = plainToClass(modProductDto, payload)
+        const errors = await validate(data)
 
         if(errors.length){
             return res.status(400).json(errors)
         }
 
-        const resultadoPeticion = await productServices.modProduct(contenidoPeticion, +id)
-        return res.status(resultadoPeticion.code).json(resultadoPeticion.message)
+        const results = await productServices.modProduct(data, +id)
+        return res.status(results.code).json(results.message)
     }
 }
