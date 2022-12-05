@@ -1,6 +1,5 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
-import {Product} from "./products.models";
 import { Branch } from "./branches.models";
 
 
@@ -46,7 +45,7 @@ export  const User= conn.define<UserModel, UserAddModel>("users", {
     }
 });
 
-User.hasMany(Branch, {
+Branch.hasMany(User, {
     sourceKey: 'id',
     foreignKey: 'id_branches',
     as: 'users',

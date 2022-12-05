@@ -88,6 +88,8 @@ export const Product = conn.define<ProductModel, ProductAddModel>("products", {
     },
 });
 
-export const BranchProduct = conn.define('branch_product', {}, {timestamps:false});
-Branch.belongsToMany(Product, {through: BranchProduct});
-Product.belongsToMany(Branch, {through: BranchProduct});
+
+Branch.hasMany(Product,
+    {foreignKey: 'id_branch',
+        sourceKey: 'id',
+        as: 'branch'});
