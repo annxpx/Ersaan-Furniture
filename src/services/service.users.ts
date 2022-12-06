@@ -50,6 +50,9 @@ class UsersServices{
 
 
     public async createUser(createUserDto: createUserDto){
+        createUserDto.type = 0;
+        const encryptPassword = await this.encrypt(createUserDto.password);
+        createUserDto.password = encryptPassword;
         this. responseDto = new ResponseDto();
         try {
             this.responseDto.data = User.create(createUserDto);
