@@ -1,14 +1,10 @@
 import * as jwt from 'jsonwebtoken'
 import 'dotenv'
-import provideToken from '../common/provideToken'
 import {User} from "../models/users.models";
 import {ResponseDto} from "../common/ResponseDto";
-import { Branch } from '../models/branches.models';
 import {createUserDto} from '../dtos/createUserDto';
 import {ChangePassDto} from '../dtos/changePassDto';
 import { TypeDto } from '../dtos/TypeDto';
-import {createCipheriv, randomBytes, scrypt} from 'crypto';
-import {promisify} from 'util';
 import * as bcrypt from 'bcrypt';
 
 class UsersServices{
@@ -26,34 +22,6 @@ class UsersServices{
         const isMatch = await bcrypt.compare(_password, hash);
         return isMatch;
     }
-
-    /*public async encrypt(_password: string){
-        const iv = randomBytes(16);
-        const password = 'prueba';
-
-        const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
-        const cipher = createCipheriv('aes-256-ctr', key, iv);
-        
-        const textToEncrypt = _password;
-        const encryptedText = Buffer.concat([
-            cipher.update(textToEncrypt),
-            cipher.final(),
-        ]);
-        return encryptedText;
-    }
-
-    public async Decrypt(_password: any){
-        const iv = randomBytes(16);
-        const password = 'prueba';
-
-        const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
-        const decipher = createCipheriv('aes-256-ctr', key, iv);
-        const decryptedText = Buffer.concat([
-            decipher.update(_password),
-            decipher.final(),
-        ]);
-        return decryptedText.toString;
-    }*/
 
     public async getUsers(){
         this.responseDto = new ResponseDto();
@@ -100,7 +68,8 @@ class UsersServices{
         this.responseDto = new ResponseDto();
         const user = await User.findOne({where: {email}});
         console.log(this.responseDto.message);
-        if(user && user.password == password){
+        const compare = await this.comparePassword(password, user.password);
+        if(user && compare){
             return user;
         }else{
             return false

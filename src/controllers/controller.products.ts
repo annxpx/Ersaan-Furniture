@@ -48,9 +48,15 @@ export class productsController{
     async modProduct(req: Request, res: Response): Promise <Response>{
         const {id} = req.params;
         const payload = req.body;
+        let updateProductDTo = plainToClass(modProductDto, payload);
+         const errors = await validate(updateProductDTo);
+        if(errors.length>0){
+            console.log(errors);
+            return res.status(400).json({"Validation errors: no se pudo actualizar": "el producto"});
+        }
         let resultadoproduct = await productServices.modProduct(payload, +id, req.headers);
         if(!resultadoproduct){
-            return res.status(400).json({"no se pudo actualizar": "el producto"});
+            return res.status(400).json({"Error en": "services"});
         }
         return res.status(200).json({"si se pudo actualizar": "el producto"});
     }

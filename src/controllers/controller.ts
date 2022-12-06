@@ -30,7 +30,7 @@ export class StoreController{
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
         this.router.post('/addProduct', verifyToken, this.productsControllers.createProduct)
         this.router.patch('/buy/:id', verifyToken, this.productsControllers.buyProduct)
-        this.router.post('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
+        this.router.patch('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
     }
 
 }
