@@ -5,6 +5,8 @@ import productServices from "../services/service.products";
 import serviceUsers from "../services/service.users";
 import { modProductDto } from "../dtos/modProductDto";
 import serviceProducts from "../services/service.products";
+import { User } from "../models/users.models";
+import { ResponseDto } from "../common/ResponseDto";
 
 export class productsController{
     async getProducts(req: Request, res: Response): Promise <Response>{
@@ -44,25 +46,12 @@ export class productsController{
     }
 
     async modProduct(req: Request, res: Response): Promise <Response>{
-        const {id}= req.params
-        const userIdProvided = req.body.userAccessData.userId
-        const userData =  await serviceUsers.getOneUser(userIdProvided)
-        if(!userData){
-            return res.status(400).json("como lograste llegar hasta aqui si no has iniciado sesion?")
+        const {id} = req.params;
+        const payload = req.body;
+        let resultadoproduct = await productServices.modProduct(payload, +id, req.headers);
+        if(!resultadoproduct){
+            return res.status(400).json({"no se pudo actualizar": "el producto"});
         }
-        if(userData.tipo==0){
-            return res.status(400).json("El usuario actual no tiene los privilegios suficientes para realizar esta accion")
-        }
-        delete req.body.userAccessData
-        const payload = req.body
-        const contenidoPeticion = plainToClass(modProductDto, payload)
-        const errors = await validate(contenidoPeticion)
-
-        if(errors.length){
-            return res.status(400).json(errors)
-        }
-
-        const resultadoPeticion = await productServices.modProduct(contenidoPeticion, +id)
-        return res.status(resultadoPeticion.code).json(resultadoPeticion.message)
+        return res.status(200).json({"si se pudo actualizar": "el producto"});
     }
 }

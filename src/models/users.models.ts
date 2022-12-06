@@ -40,7 +40,7 @@ export  const User= conn.define<UserModel, UserAddModel>("users", {
         allowNull: false,
     },
     password: {
-        type: Sequelize.DataType.STRING(15),
+        type: Sequelize.DataType.STRING(200),
         allowNull: false,
     }
 });

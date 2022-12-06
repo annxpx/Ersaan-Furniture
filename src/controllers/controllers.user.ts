@@ -9,13 +9,14 @@ import serviceUsers from "../services/service.users";
 import * as jwt from 'jsonwebtoken'
 import provideToken from "../common/provideToken";
 import verifyToken from "../common/verifyToken";
+import {TypeDto} from '../dtos/TypeDto';
 export class UserCOntroller{
 
     async logIn(req: Request, res: Response): Promise <Response>{
         const payload = req.body
         const contenidoPeticion = plainToClass(LogInDto, payload)
+        const encryptWord =  await UserServices.encrypt(contenidoPeticion.password);
         const errors = await validate(contenidoPeticion)
-
         if(errors.length){
             console.log(errors);
             return res.status(400).json("errores en los datos de inicio de sesion")
@@ -54,12 +55,21 @@ export class UserCOntroller{
 
     //este metodo solo es accesible si el usuario tiene token---------------------
     async changePassword(req: Request, res: Response): Promise <Response>{
-        const  payload = plainToClass(ChangePassDto, req.body);
+        const  payload = plainToClass(ChangePassDto,req.body);
         const resultadoPeticion = await UserServices.changePassword(payload, req);
         if(!resultadoPeticion){
             return res.status(400).json("No se pudo cambiar la contraseña")
         }
         return res.status(200).json("contraseña guardada")
+    }
+
+    async changeType(req: Request, res: Response): Promise <Response>{
+        const  payload = plainToClass(TypeDto,req.body);
+        const resultadoPeticion = await UserServices.changeType(payload, req);
+        if(!resultadoPeticion){
+            return res.status(400).json("No se pudo cambiar el rol")
+        }
+        return res.status(200).json("rol cambiado")
     }
    
 }

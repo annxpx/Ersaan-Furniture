@@ -6,15 +6,54 @@ import {ResponseDto} from "../common/ResponseDto";
 import { Branch } from '../models/branches.models';
 import {createUserDto} from '../dtos/createUserDto';
 import {ChangePassDto} from '../dtos/changePassDto';
+import { TypeDto } from '../dtos/TypeDto';
+import {createCipheriv, randomBytes, scrypt} from 'crypto';
+import {promisify} from 'util';
+import * as bcrypt from 'bcrypt';
 
 class UsersServices{
     private responseDto: ResponseDto;
 
-    private usuariosDePrueba = [
-        { id: 1, name: "Andrea", email: "andrea@gmail.com", password: "123", tipo: 0, sucursal: 1},
-        { id: 2, name: "Sary", email: "sary@gmail.com", password: "hola", tipo: 0, sucursal: 2},
-        { id: 3, name: "Erick", email: "Erick@gmail.com", password: "zanahoria", tipo: 1, sucursal: 2}
-    ]
+
+    public async encrypt(_password: string){
+        const saltOrRounds = 10;
+        const password = _password;
+        const hash = await bcrypt.hash(password, saltOrRounds);
+        return hash;
+    }
+
+    public async comparePassword(_password: string, hash: string){
+        const isMatch = await bcrypt.compare(_password, hash);
+        return isMatch;
+    }
+
+    /*public async encrypt(_password: string){
+        const iv = randomBytes(16);
+        const password = 'prueba';
+
+        const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
+        const cipher = createCipheriv('aes-256-ctr', key, iv);
+        
+        const textToEncrypt = _password;
+        const encryptedText = Buffer.concat([
+            cipher.update(textToEncrypt),
+            cipher.final(),
+        ]);
+        return encryptedText;
+    }
+
+    public async Decrypt(_password: any){
+        const iv = randomBytes(16);
+        const password = 'prueba';
+
+        const key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
+        const decipher = createCipheriv('aes-256-ctr', key, iv);
+        const decryptedText = Buffer.concat([
+            decipher.update(_password),
+            decipher.final(),
+        ]);
+        return decryptedText.toString;
+    }*/
 
     public async getUsers(){
         this.responseDto = new ResponseDto();
@@ -32,7 +71,7 @@ class UsersServices{
     }
 
     public async getOneUser(req: Request){
-        const token = req.headers['x-access-token']
+        const token = req.headers['x-access-token'];
         try{
             const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
             return decoded.id;
@@ -70,6 +109,9 @@ class UsersServices{
 
     public async changePassword(newPassword: ChangePassDto, req: any){
         const id = await this.getOneUser(req);
+        const encryptedPassword = await this.encrypt(newPassword.password);
+        newPassword.password = encryptedPassword;
+        console.log("new password "+ newPassword.password);
         if(!(id>=0)){
             return false;
         }
@@ -78,6 +120,25 @@ class UsersServices{
                 ...newPassword
         };
         const updatePass = await User.update(newPass, {where:{id}});
+        return true;
+    }
+
+    public async changeType( newType: TypeDto, req: any){
+        const _id = await this.getOneUser(req);
+        const userId = await User.findOne({where: req.param});
+        const {id} = userId;
+        if(!(_id>=0)){
+            return false;
+        }
+        const userData = await User.findOne({where: _id});
+        if(userData.type != 1){
+            return false;
+        }
+        const updateType = {
+                userId,
+                ...newType
+        };
+        const updatedType = await User.update(updateType, {where: {id}});
         return true;
     }
 

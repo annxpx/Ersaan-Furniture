@@ -4,6 +4,7 @@ import { modProductDto } from '../dtos/modProductDto'
 import { Index } from 'sequelize-typescript'
 import {Product} from "../models/products.models";
 import {ResponseDto} from "../common/ResponseDto";
+import { User } from '../models/users.models';
 
 class productsServices{
 
@@ -75,24 +76,28 @@ class productsServices{
 
     }
 
-    async modProduct(modProductDto: modProductDto, id: number){
-        const actualizaciones = Object.entries(modProductDto)
-
-        const producto = await this.getProduct(id)
-
-        if(!(producto.code==200)){
-            return {code:400, message: "este producto no existe"}
+    async modProduct(modProductDto: modProductDto, id: number, req: any){
+        const producto = await this.getProduct(id);
+        const token = req['x-access-token'];
+        const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
+        const iduser = decoded.id;
+        if(!iduser){
+            return false;
         }
-
-        const indiceProducto = this.productosDePrueba.findIndex(valorActal => valorActal.id == id)
-        
-        actualizaciones.map((posicionActual) => {
-            if(posicionActual[1]!=''){
-                this.productosDePrueba[indiceProducto][`${posicionActual[0]}`] = posicionActual[1]
-            }
-        })
-
-        return {code: 200, message: this.productosDePrueba[indiceProducto] }
+        const dataUser = await User.findOne({where: iduser});
+        if(dataUser.type !== 1){
+            return false
+        }
+        if(!(producto.code==200)){
+            return false;
+        }
+        const newProdu = {
+            id,
+            ...modProductDto
+        };
+        console.log("el id del producto es "+ id);
+        const updatedProd = await Product.update(newProdu, {where:{id}});
+        return true
     }
                   
 }

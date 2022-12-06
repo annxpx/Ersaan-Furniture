@@ -8,7 +8,7 @@ export class modProductDto {
     
     /*@IsInt()
     @Min(20)
-    @Max(4000)*/
+    @Max(99999)*/
     price: number
 
     @Length(0,50, {
@@ -23,17 +23,17 @@ export class modProductDto {
     
     /*@IsInt()
     @Min(0)
-    @Max(4)*/
+    @Max(100)*/
     width: number
 
-    @IsInt()
+    /*@IsInt()
     @Min(1)
-    @Max(100)
+    @Max(100)*/
     length: number
 
     /*@IsInt()
-    @Min( 0)
-    @Max(4)*/
+    @Min(1)
+    @Max(100)*/
     height: number
 
     @Length(3,50, {
