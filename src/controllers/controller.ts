@@ -3,15 +3,18 @@ import { UserCOntroller } from "./controllers.user";
 import { productsController } from "./controller.products";
 import verifyToken from "../common/verifyToken";
 import serviceUsers from "../services/service.users";
+import { branchesController } from "./controller.branches";
 
 export class StoreController{
     router = Router()
-    userControllers : UserCOntroller
-    productsControllers : productsController
+    userControllers : UserCOntroller;
+    productsControllers : productsController;
+    branchesControllers : branchesController;
 
     constructor(){
-        this.userControllers = new UserCOntroller()
-        this.productsControllers = new productsController()
+        this.userControllers = new UserCOntroller();
+        this.productsControllers = new productsController();
+        this.branchesControllers = new branchesController();
         this.initRoutes()
     }
 
@@ -29,8 +32,13 @@ export class StoreController{
         this.router.get('/products', verifyToken, this.productsControllers.getProducts)
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
         this.router.post('/addProduct', verifyToken, this.productsControllers.createProduct)
-        this.router.patch('/buy/:id', verifyToken, this.productsControllers.buyProduct)
         this.router.patch('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
+        
+        //peticiones de la aplicacion: sucursales
+        this.router.get('/sucursales', verifyToken, this.branchesControllers.getBranches);
+        this.router.get('/sucursal/:id', verifyToken, this.branchesControllers.getBranch);
+        this.router.post('/addSucursal', verifyToken, this.branchesControllers.createBranch);
+        this.router.patch('/modSucursal/:id', verifyToken, this.branchesControllers.updateBranch);
     }
 
 }

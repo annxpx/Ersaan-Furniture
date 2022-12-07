@@ -53,6 +53,7 @@ class productsServices{
             this.responseDto.data = Product.create(modProduct);
             this.responseDto.code = 201;
             this.responseDto.message = 'Producto ingresado con exito';
+            return this.responseDto;
         } catch (error) {
             this.responseDto.code = 500;
             this.responseDto.message = 'Error al ingresar el producto';
