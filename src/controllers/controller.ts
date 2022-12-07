@@ -38,6 +38,7 @@ export class StoreController{
         this.router.get('/sucursal/:id', verifyToken, this.branchesControllers.getBranch);
         this.router.post('/addSucursal', verifyToken, this.branchesControllers.createBranch);
         this.router.patch('/modSucursal/:id', verifyToken, this.branchesControllers.updateBranch);
+        this.router.delete('/deleteSucursal/:id', verifyToken, this.branchesControllers.deleteBranch);
     }
 
 }

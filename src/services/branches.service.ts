@@ -72,8 +72,26 @@ class branchesServices {
             ...branchUpsert
         };
         const updatedBranch = await Branch.update(newBranch, {where:{id}});
-        return true
+        return true;
     }
 
+    async deleteBranch(id: number, req: any){
+        const branch = await this.getBranch(id);
+        const token = req['x-access-token'];
+        const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
+        const iduser = decoded.id;
+        if(!iduser){
+            return false;
+        }
+        const dataUser = await User.findOne({where: iduser});
+        if(dataUser.type !== 1){
+            return false
+        }
+        if(!(branch.code==200)){
+            return false;
+        }
+        const deleteBranch = await Branch.destroy({where: {id}});
+        return true;
+    }
 }
 export default new branchesServices()

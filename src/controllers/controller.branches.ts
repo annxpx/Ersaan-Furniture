@@ -45,8 +45,17 @@ export class branchesController{
         }
         let resultadoBranch = await branchesServices.updateBranch(payload, +id, req.headers);
         if(!resultadoBranch){
-            return res.status(400).json({"Error en": "la peticion"});
+            return res.status(400).json({"message": "Error al modificar la peticion"});
         }
-        return res.status(200).json({"si se pudo actualizar": "la sucursal"});
+        return res.status(200).json({"message": "Sucursal modificada con exito"});
+    }
+
+    async deleteBranch(req: Request, res: Response): Promise <Response>{
+        const {id} = req.params;
+        let resultadoPeticion = await branchesServices.deleteBranch(+id, req.headers); 
+        if(!resultadoPeticion){
+            return res.status(400).json({"message": "No se pudo eliminar la sucursal"});
+        }
+        return res.status(200).json({"message": "Sucursal eliminada con exito"});
     }
 }
