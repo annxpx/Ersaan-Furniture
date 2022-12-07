@@ -39,7 +39,11 @@ export class productsController{
     async modProduct(req: Request, res: Response): Promise <Response>{
         const {id} = req.params;
         const payload = req.body;
+        console.log("este es el payload");
+        console.log(payload);
         let updateProductDTo = plainToClass(modProductDto, payload);
+        console.log("Este el es producto nuevo");
+        console.log(updateProductDTo);
          const errors = await validate(updateProductDTo);
         if(errors.length>0){
             console.log(errors);
@@ -50,5 +54,14 @@ export class productsController{
             return res.status(400).json({"message": "Error al modificar el producto"});
         }
         return res.status(200).json({"message": "Producto modificado con exito"});
+    }
+
+    async deleteProduct(req: Request, res: Response): Promise <Response>{
+        const {id} = req.params;
+        let resultadoPeticion = await productServices.deleteProduct(+id, req.headers); 
+        if(!resultadoPeticion){
+            return res.status(400).json({"message": "No se pudo eliminar el producto"});
+        }
+        return res.status(200).json({"message": "Producto eliminado con exito"});
     }
 }

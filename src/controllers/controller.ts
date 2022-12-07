@@ -32,7 +32,8 @@ export class StoreController{
         this.router.get('/product/:id', verifyToken, this.productsControllers.getProduct)
         this.router.post('/addProduct', verifyToken, this.productsControllers.createProduct)
         this.router.patch('/modproduct/:id', verifyToken, this.productsControllers.modProduct)
-        
+        this.router.delete('/deleteProduct/:id', verifyToken, this.productsControllers.deleteProduct)
+
         //peticiones de la aplicacion: sucursales
         this.router.get('/sucursales', verifyToken, this.branchesControllers.getBranches);
         this.router.get('/sucursal/:id', verifyToken, this.branchesControllers.getBranch);

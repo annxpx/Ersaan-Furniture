@@ -77,9 +77,27 @@ class productsServices{
             ...modProductDto
         };
         const updatedProd = await Product.update(newProdu, {where:{id}});
-        return true
+        return true;
     }
                   
+    async deleteProduct(id: number, req: any){
+        const product = await this.getProduct(id);
+        const token = req['x-access-token'];
+        const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
+        const iduser = decoded.id;
+        if(!iduser){
+            return false;
+        }
+        const dataUser = await User.findOne({where: iduser});
+        if(dataUser.type !== 1){
+            return false
+        }
+        if(!(product.code==200)){
+            return false;
+        }
+        const deletedProduct = await Product.destroy({where: {id}});
+        return true;
+    }
 }
 
 export default new productsServices
