@@ -2,7 +2,6 @@ import { Router } from "express";
 import { UserCOntroller } from "./controllers.user";
 import { productsController } from "./controller.products";
 import verifyToken from "../common/verifyToken";
-import serviceUsers from "../services/service.users";
 import { branchesController } from "./controller.branches";
 
 export class StoreController{

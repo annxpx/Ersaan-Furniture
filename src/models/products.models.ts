@@ -1,6 +1,5 @@
 ﻿import {conn} from "../database/connection";
 import * as Sequelize from "sequelize-typescript";
-import {User} from "./users.models";
 import {Branch} from "./branches.models";
 
 export interface ProductAddModel {

@@ -6,9 +6,9 @@ export class modProductDto {
     })
     productName: string
     
-    /*@IsInt()
+    @IsInt()
     @Min(20)
-    @Max(99999)*/
+    @Max(99999)
     price: number
 
     @Length(0,50, {
@@ -21,19 +21,19 @@ export class modProductDto {
     })
     status: string
     
-    /*@IsInt()
+    @IsInt()
     @Min(0)
-    @Max(100)*/
+    @Max(100)
     width: number
 
-    /*@IsInt()
+    @IsInt()
     @Min(1)
-    @Max(100)*/
+    @Max(100)
     length: number
 
-    /*@IsInt()
+    @IsInt()
     @Min(1)
-    @Max(100)*/
+    @Max(100)
     height: number
 
     @Length(3,50, {
@@ -46,14 +46,14 @@ export class modProductDto {
     })
     material: string
 
-    /*@IsInt()
+    @IsInt()
     @Min(1)
-    @Max(200)*/
+    @Max(200)
     quantity: number
 
-    /*@IsInt()
+    @IsInt()
     @Min(1)
-    @Max(20)*/
+    @Max(20)
     pieces: number
 
    //@Length(0,10, {message: "debe ingresar una sucursal valida!"})

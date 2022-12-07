@@ -1,4 +1,4 @@
-import {Length, IsNotEmpty, MIN, MAX} from "class-validator";
+import {Length, IsNotEmpty, Min, Max, IsInt} from "class-validator";
 
 
 export class createUserDto {
@@ -18,14 +18,13 @@ export class createUserDto {
     @IsNotEmpty()
     password: string
     
-    //@MIN(0)
-    //@MAX(1)
+    @IsInt()
+    @Min(0)
+    @Max(1)
     type: number
     
-    /*@MIN(1,{
+    @Min(1,{
         message: 'Branch must be at least 1'})
-    @MAX(10,{
-        message: 'Branch must be at most 10'})
-    @IsNotEmpty()*/
+    @IsNotEmpty()
     id_branches: number
 }

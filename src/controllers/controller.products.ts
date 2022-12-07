@@ -2,11 +2,8 @@ import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
 import { validate } from "class-validator";
 import productServices from "../services/service.products";
-import serviceUsers from "../services/service.users";
 import { modProductDto } from "../dtos/modProductDto";
 import serviceProducts from "../services/service.products";
-import { User } from "../models/users.models";
-import { ResponseDto } from "../common/ResponseDto";
 
 export class productsController{
     async getProducts(req: Request, res: Response): Promise <Response>{
@@ -38,12 +35,6 @@ export class productsController{
         return res.status(200).json(await serviceProducts.createProduct(contenidoPeticion))
     }
 
-    async buyProduct(req: Request, res: Response): Promise <Response>{
-        const {id} = req.params
-        const resultadoPeticion = await productServices.buyProduct(+id)
-
-        return res.status(resultadoPeticion.code).json(resultadoPeticion.message)
-    }
 
     async modProduct(req: Request, res: Response): Promise <Response>{
         const {id} = req.params;
@@ -56,8 +47,8 @@ export class productsController{
         }
         let resultadoproduct = await productServices.modProduct(payload, +id, req.headers);
         if(!resultadoproduct){
-            return res.status(400).json({"Error en": "services"});
+            return res.status(400).json({"message": "Error al modificar el producto"});
         }
-        return res.status(200).json({"si se pudo actualizar": "el producto"});
+        return res.status(200).json({"message": "Producto modificado con exito"});
     }
 }

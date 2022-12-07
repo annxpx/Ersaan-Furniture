@@ -6,17 +6,16 @@ import {ChangePassDto} from "../dtos/changePassDto";
 import UserServices from "../services/service.users";
 import { LogInDto } from "../dtos/logInDto";
 import serviceUsers from "../services/service.users";
-import * as jwt from 'jsonwebtoken'
 import provideToken from "../common/provideToken";
-import verifyToken from "../common/verifyToken";
 import {TypeDto} from '../dtos/TypeDto';
 export class UserCOntroller{
 
     async logIn(req: Request, res: Response): Promise <Response>{
         const payload = req.body
+    
         const contenidoPeticion = plainToClass(LogInDto, payload)
-        const encryptWord =  await UserServices.encrypt(contenidoPeticion.password);
         const errors = await validate(contenidoPeticion)
+
         if(errors.length){
             console.log(errors);
             return res.status(400).json("errores en los datos de inicio de sesion")
@@ -35,6 +34,8 @@ export class UserCOntroller{
 
     async singUp(req: Request, res: Response): Promise <Response>{
         const  payload = req.body
+        payload.type = 0;
+        
         const contenidoPeticion = plainToClass(createUserDto, payload)
         const errors = await validate(contenidoPeticion)
 
@@ -69,7 +70,7 @@ export class UserCOntroller{
         if(!resultadoPeticion){
             return res.status(400).json("No se pudo cambiar el rol")
         }
-        return res.status(200).json("rol cambiado")
+        return res.status(200).json("Rol cambiado con exito")
     }
    
 }

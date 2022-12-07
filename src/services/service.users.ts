@@ -50,7 +50,6 @@ class UsersServices{
 
 
     public async createUser(createUserDto: createUserDto){
-        createUserDto.type = 0;
         const encryptPassword = await this.encrypt(createUserDto.password);
         createUserDto.password = encryptPassword;
         this. responseDto = new ResponseDto();
@@ -58,6 +57,7 @@ class UsersServices{
             this.responseDto.data = User.create(createUserDto);
             this.responseDto.code = 201;
             this.responseDto.message = 'Usuario creado con exito';
+            return this.responseDto;
         } catch (error) {
             this.responseDto.code = 500;
             this.responseDto.message = 'Error al crear el usuario';
