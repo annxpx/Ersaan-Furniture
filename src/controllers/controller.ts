@@ -22,8 +22,8 @@ export class StoreController{
         //peticiones de la aplicacion: usuarios
         this.router.post('/login', this.userControllers.logIn)
         this.router.post('/signup', this.userControllers.singUp)
-        this.router.post('/changepass', verifyToken, this.userControllers.changePassword)
-        this.router.post('/rol/:id', verifyToken, this.userControllers.changeType)
+        this.router.patch('/changepass', verifyToken, this.userControllers.changePassword)
+        this.router.patch('/rol/:id', verifyToken, this.userControllers.changeType)
         
         //peticiones de la aplicacion: productos
         this.router.get('/products', verifyToken, this.productsControllers.getProducts)
