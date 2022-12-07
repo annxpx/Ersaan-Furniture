@@ -35,24 +35,6 @@ export class productsController {
     return res.status(200).json(await serviceProducts.createProduct(contenidoPeticion))
   }
 
-
-  async modProduct(req: Request, res: Response): Promise<Response> {
-    const {id} = req.params;
-    const payload = req.body;
-    let updateProductDTo = plainToClass(modProductDto, payload);
-    const errors = await validate(updateProductDTo);
-    if (errors.length > 0) {
-      console.log(errors);
-      return res.status(400).json({"Validation errors: no se pudo actualizar": "el producto"});
-    }
-    let resultadoproduct = await productServices.modProduct(payload, +id, req.headers);
-    if (!resultadoproduct) {
-      return res.status(400).json({"message": "Error al modificar el producto"});
-    }
-    return res.status(200).json({"message": "Producto modificado con exito"});
-  }
-
-/*
     async modProduct(req: Request, res: Response): Promise <Response>{
         const {id} = req.params;
         const payload = req.body;
@@ -71,7 +53,7 @@ export class productsController {
             return res.status(400).json({"message": "Error al modificar el producto"});
         }
         return res.status(200).json({"message": "Producto modificado con exito"});
-    }*/
+    }
 
     async deleteProduct(req: Request, res: Response): Promise <Response>{
         const {id} = req.params;

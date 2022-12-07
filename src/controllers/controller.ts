@@ -26,7 +26,6 @@ export class StoreController {
     this.router.post('/signup', this.userControllers.singUp)
     this.router.patch('/changepass', verifyToken, this.userControllers.changePassword)
     this.router.patch('/rol/:id', verifyToken, this.userControllers.changeType)
-    this.router.delete('/delete/:id', verifyToken, this.userControllers.deleteUser)
 
     //peticiones de la aplicacion: productos
     this.router.get('/products', verifyToken, this.productsControllers.getProducts)

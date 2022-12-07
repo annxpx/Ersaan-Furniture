@@ -65,14 +65,6 @@ export class UserCOntroller {
     return res.status(200).json("contraseña guardada")
   }
 
-  async deleteUser(req: Request, res: Response): Promise<Response> {
-    const {id} = req.params;
-    let result = await UserServices.deleteUser(+id, req.headers);
-    if (!result) {
-      return res.status(400).json({"message": "No se pudo eliminar el usuario seleccionado"});
-    }
-    return res.status(200).json({"message": "Usuario eliminado con exito"});
-  }
 
   async changeType(req: Request, res: Response): Promise<Response> {
     const payload = plainToClass(TypeDto, req.body);

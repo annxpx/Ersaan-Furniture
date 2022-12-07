@@ -49,25 +49,6 @@ class UsersServices {
     }
   }
 
-  async deleteUser(id: number, req: any) {
-    const user = await this.getOneUser(req);
-    const token = req['x-access-token'];
-    const decoded = jwt.verify(token, process.env.MY_SECRET_TOKEN)
-    const idUser = decoded.id;
-    if (!idUser) {
-      return false;
-    }
-    const dataUser = await User.findOne({where: idUser});
-    if (dataUser.type !== 1) {
-      return false
-    }
-    if (!(user.code == 200)) {
-      return false;
-    }
-    const deleteUser = await User.destroy({where: {id}});
-    return true;
-  }
-
   public async createUser(createUserDto: createUserDto) {
     const encryptPassword = await this.encrypt(createUserDto.password);
     createUserDto.password = encryptPassword;
