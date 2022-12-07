@@ -1,53 +1,54 @@
 import express, {json, urlencoded} from 'express'
-import { StoreController } from './controllers/controller';
+import {StoreController} from './controllers/controller';
 import {conn} from './database/connection';
 import {Product} from "./models/products.models";
 import {User} from "./models/users.models";
 import {Branch} from "./models/branches.models";
 
-class App{
+class App {
 
-    public express : express.Application;
-    storeController : StoreController
+  public express: express.Application;
+  storeController: StoreController
 
 
-    constructor(){
-        this.express = express();
-        this.middlewares();
-        this.db();
-        this.controllers();
-        this.routes();
-    }
+  constructor() {
+    this.express = express();
+    this.middlewares();
+    this.db();
+    this.controllers();
+    this.routes();
+  }
 
-    middlewares(){
-        this.express.use(json());
-        this.express.use(urlencoded({extended: false}))
-    }
-    db(){
-        conn.sync()
-            .then(() => {
-                Product.sync();
-                User.sync();
-                Branch.sync();
-                console.log(`Database is connected`);
-            })
-            .catch((err)=> {
-                console.log(`Error`, err);
-            })
-    }
+  middlewares() {
+    this.express.use(json());
+    this.express.use(urlencoded({extended: false}))
+  }
 
-    listen(port : number) {
-        this.express.listen(port, () => 
-        console.log(`Server run in: http://localhost:${port}`))
-    }
+  db() {
+    conn.sync()
+      .then(() => {
+        Product.sync();
+        User.sync();
+        Branch.sync();
+        console.log(`Database is connected`);
+      })
+      .catch((err) => {
+        console.log(`Error`, err);
+      })
+  }
 
-    routes(){
-        this.express.use('/api', this.storeController.router)
-    }
+  listen(port: number) {
+    this.express.listen(port, () =>
+      console.log(`Server run in: http://localhost:${port}`))
+  }
 
-    controllers(){
-        this.storeController = new StoreController()
-    }
+  routes() {
+    this.express.use('/api', this.storeController.router)
+  }
+
+  controllers() {
+    this.storeController = new StoreController()
+  }
 }
 
 export default new App();
